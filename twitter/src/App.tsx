@@ -1,35 +1,91 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Layout } from "./component/Layout";
+import { useRecoilValue } from "recoil";
+import { authState, initState, userState } from "./atom";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { app } from "./firebaseApp";
+import { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const user = useRecoilValue(userState);
+    const isInit = useRecoilValue(initState);
+    const isAuth = useRecoilValue(authState);
+    //이메일, 비밀번호 변수
+    const [serial, setSerial] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    //입력된 이메일, 비밀번호 값 변경
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {
+            target: { name, value },
+        } = e;
+        if (name === "serial") {
+            setSerial(value);
+        }
+        if (name === "password") {
+            setPassword(value);
+        }
+    };
+    //로그인
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            const auth = getAuth(app);
+            await signInWithEmailAndPassword(auth, serial, password);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    console.log("user", user);
+    console.log("init", isInit);
+    console.log("auth", isAuth);
+    return (
+        <Layout>
+            <ToastContainer
+                theme="dark"
+                autoClose={1000}
+                hideProgressBar
+                newestOnTop
+            />
+            <div>
+                <form onSubmit={onSubmit}>
+                    <div className="info">
+                        <input
+                            type="text"
+                            id="serial"
+                            name="serial"
+                            className="loginInfo"
+                            placeholder="ID"
+                            onChange={onChange}
+                        />
+                        <input
+                            type="text"
+                            id="password"
+                            name="password"
+                            className="loginInfo"
+                            placeholder="PASSWORD"
+                            onChange={onChange}
+                        />
+                    </div>
+                    <div className="submit">
+                        <button type="submit" className="loginSubmit">
+                            로그인
+                        </button>
+                    </div>
+                </form>
+                <button
+                    type="button"
+                    onClick={async () => {
+                        const auth = getAuth(app);
+                        await signOut(auth);
+                    }}
+                >
+                    Logout
+                </button>
+                <div>ㅎㅎ</div>
+            </div>
+        </Layout>
+    );
 }
 
-export default App
+export default App;
