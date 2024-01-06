@@ -2,6 +2,10 @@ import { css } from "@emotion/react";
 import giantsInline from "./assets/fonts/Giants-Inline.ttf";
 import nexonGothic from "./assets/fonts/NEXON_Lv2_Gothic_Light.ttf";
 
+export const borderColor = "#708090";
+export const backgroundColor = "#1e293b";
+export const activeColor = "#60a5fa";
+
 export const GlobalStyle = css`
     @font-face {
         font-family: "Giants-Inline";
@@ -25,11 +29,12 @@ export const GlobalStyle = css`
     body {
         width: 100%;
         height: 100vh;
-        font-family: "Giants-Inline", "nexonGothic";
     }
 
     body {
         font-family: "Giants-Inline", "nexonGothic";
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         overflow-x: overlay;
         overflow-y: overlay;
         background: #1e293b;

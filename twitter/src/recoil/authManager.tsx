@@ -4,7 +4,6 @@ import { authState, initState, userState } from "@/atom";
 import { useSetRecoilState } from "recoil";
 import { app } from "@/firebaseApp";
 
-//리액트 쿼리로 바꿔야 함
 const AuthManager = () => {
     const auth = getAuth(app);
     const setUser = useSetRecoilState(userState);
