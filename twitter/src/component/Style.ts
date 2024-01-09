@@ -93,7 +93,7 @@ export const ButtonStyle = styled.button<ButtonProps>`
     &.selected {
         color: red;
     }
-    &:hover {
-        background: transparent;
-    }
+    // &:hover {
+    //     background: transparent;
+    // }
 `;
