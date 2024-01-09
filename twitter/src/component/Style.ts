@@ -12,18 +12,27 @@ interface ButtonProps {
     fontSize: string;
 }
 
+interface DropdownProps {
+    height: string;
+    fontFamily: string;
+}
+
 export const TopTitle = styled.div`
     background: transparent;
     backdrop-filter: blur(10px);
     width: 100%;
+    height: 5%;
     position: sticky;
     max-width: 600px;
     margin: 0 auto;
     top: 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid ${borderColor};
     .title {
         background: transparent;
-        width: calc(100% - 32px);
-        padding: 16px;
+        width: 100%;
+        padding: 0 16px;
         font-weight: 700;
         font-size: 20px;
         .text {
@@ -51,6 +60,26 @@ export const InputStyle = styled.input<InputProps>`
     }
 `;
 
+export const DropdownStyle = styled.select<DropdownProps>`
+    width: 100%;
+    height: ${(props) => props.height};
+    font-family: ${(props) => props.fontFamily};
+    // background: transparent;
+    // border: 1px solid #fff;
+    background-color: transparent;
+    border: none;
+    border-radius: 3px;
+    caret-color: #fff;
+    color: #fff;
+    text-indent: 5px;
+    &:focus {
+        outline: none;
+    }
+    option {
+        color: #000;
+    }
+`;
+
 export const ButtonStyle = styled.button<ButtonProps>`
     width: 100%;
     height: 100%;
@@ -58,12 +87,13 @@ export const ButtonStyle = styled.button<ButtonProps>`
     border: 1px solid ${borderColor};
     border-radius: 3px;
     color: #fff;
+    font-family: "nexonGothic";
     font-size: ${(props) => props.fontSize};
     transition: all 0.1s;
     &.selected {
         color: red;
     }
     &:hover {
-        background: rgba(255, 255, 255, 0.1);
+        background: transparent;
     }
 `;

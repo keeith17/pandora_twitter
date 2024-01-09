@@ -5,19 +5,26 @@ import Router from "./component/Router";
 import { useRecoilValue } from "recoil";
 import { initState } from "./atom";
 import Loader from "./component/loader/Loader";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { Global } from "@emotion/react";
+import { GlobalStyle } from "./GlobalStyle";
 
 function App() {
     const init = useRecoilValue(initState);
     return (
-        <Layout>
-            <ToastContainer
-                theme="dark"
-                autoClose={1000}
-                hideProgressBar
-                newestOnTop
-            />
-            {init ? <Router /> : <Loader />}
-        </Layout>
+        <>
+            <Global styles={GlobalStyle} />
+            <Layout>
+                <ToastContainer
+                    theme="dark"
+                    autoClose={1000}
+                    hideProgressBar
+                    newestOnTop
+                />
+                {init ? <Router /> : <Loader />}
+            </Layout>
+            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        </>
     );
 }
 

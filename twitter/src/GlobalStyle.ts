@@ -5,6 +5,7 @@ import nexonGothic from "./assets/fonts/NEXON_Lv2_Gothic_Light.ttf";
 export const borderColor = "#708090";
 export const backgroundColor = "#1e293b";
 export const activeColor = "#60a5fa";
+export const grayText = "#9ca3af";
 
 export const GlobalStyle = css`
     @font-face {
@@ -39,10 +40,10 @@ export const GlobalStyle = css`
         overflow-y: overlay;
         background: #1e293b;
         color: #ffffff;
-        // -webkit-user-select: none;
-        // -moz-user-select: none;
-        // -ms-user-select: none;
-        // user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
 
     ul,
@@ -86,8 +87,6 @@ export const GlobalStyle = css`
     #root {
         width: 100%;
         height: 100%;
-        display: flex;
-        align-items: center;
     }
 
     button {
