@@ -6,6 +6,8 @@ export const borderColor = "#708090";
 export const backgroundColor = "#1e293b";
 export const activeColor = "#60a5fa";
 export const grayText = "#9ca3af";
+export const danger = "#681313";
+export const grayDark = "#3f434d";
 
 export const GlobalStyle = css`
     @font-face {
@@ -33,7 +35,7 @@ export const GlobalStyle = css`
     }
 
     body {
-        font-family: "Giants-Inline", "nexonGothic";
+        font-family: "nexonGothic", "Giants-Inline";
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: overlay;
@@ -86,7 +88,6 @@ export const GlobalStyle = css`
 
     #root {
         width: 100%;
-        height: 100%;
     }
 
     button {
@@ -101,7 +102,8 @@ export const GlobalStyle = css`
     }
 
     &::-webkit-scrollbar {
-        width: 10px;
+        display: none;
+        // width: 10px;
     }
     &::-webkit-scrollbar-thumb {
         border-radius: 2px;

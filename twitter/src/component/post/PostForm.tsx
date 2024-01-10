@@ -3,12 +3,13 @@ import { ButtonStyle, DropdownStyle, InputStyle } from "../Style";
 import { FormWrapStyle } from "./PostStyle";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/atom";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebaseApp";
 import { toast } from "react-toastify";
 
 export default function PostForm() {
+    const queryClient = useQueryClient();
     const user = useRecoilValue(userState);
     const [content, setContent] = useState<string>("");
     const [hashTag, setHashTag] = useState<string>("notice");
@@ -43,6 +44,9 @@ export default function PostForm() {
             await addDoc(collection(db, "posts"), {
                 content: content,
                 createdAt: new Date()?.toLocaleDateString("ko", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
                     hour: "2-digit",
                     minute: "2-digit",
                     second: "2-digit",
@@ -52,6 +56,7 @@ export default function PostForm() {
                 imgUrl: imgUrl,
                 profileUrl: user?.photoURL,
             });
+            await queryClient.invalidateQueries("AllPosts");
             setContent("");
             setHashTag("notice");
             setImgUrl("");

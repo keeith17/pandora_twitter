@@ -21,7 +21,6 @@ export const TopTitle = styled.div`
     background: transparent;
     backdrop-filter: blur(10px);
     width: 100%;
-    height: 5%;
     position: sticky;
     max-width: 600px;
     margin: 0 auto;
@@ -32,9 +31,10 @@ export const TopTitle = styled.div`
     .title {
         background: transparent;
         width: 100%;
-        padding: 0 16px;
+        padding: 8px 16px;
         font-weight: 700;
         font-size: 20px;
+        font-family: "Giants-Inline";
         .text {
             width: 100%;
         }
@@ -64,14 +64,14 @@ export const DropdownStyle = styled.select<DropdownProps>`
     width: 100%;
     height: ${(props) => props.height};
     font-family: ${(props) => props.fontFamily};
-    // background: transparent;
+    text-align: center;
+    // text-indent: 5px;
+    background: transparent;
     // border: 1px solid #fff;
-    background-color: transparent;
     border: none;
     border-radius: 3px;
     caret-color: #fff;
     color: #fff;
-    text-indent: 5px;
     &:focus {
         outline: none;
     }
@@ -96,4 +96,18 @@ export const ButtonStyle = styled.button<ButtonProps>`
     // &:hover {
     //     background: transparent;
     // }
+`;
+
+export const ButtonStyle2 = styled.button`
+    padding: 0.2rem 0.8rem;
+    border-radius: 50px;
+    font-size: 12px;
+    line-height: 1.25rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    &:disabled {
+        opacity: 0.5;
+    }
 `;

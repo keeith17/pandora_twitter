@@ -11,8 +11,10 @@ export interface PostProps {
     createdAt: string;
     hashTag?: string;
     imgUrl?: string;
-    profileUrl?: string;
     uid: string;
+    likes?: string[];
+    likeCount?: number;
+    comments?: string[];
 }
 export default function HomePage() {
     // 전체 포스트 받아오기
