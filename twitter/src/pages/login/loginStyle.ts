@@ -2,13 +2,11 @@ import styled from "@emotion/styled";
 
 export const LoginWrap = styled.div`
     width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 100vh;
     form {
         width: 70%;
-        height: 40%;
+        height: 100%;
+        margin: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -16,7 +14,7 @@ export const LoginWrap = styled.div`
         gap: 20px;
         .buttonBox {
             width: 100%;
-            height: 15%;
+            height: 55px;
             padding: 10px 0;
         }
     }
