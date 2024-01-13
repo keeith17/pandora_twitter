@@ -1,4 +1,4 @@
-import { borderColor } from "@/GlobalStyle";
+import { activeColor, borderColor } from "@/GlobalStyle";
 import styled from "@emotion/styled";
 
 interface InputProps {
@@ -42,6 +42,18 @@ export const TopTitle = styled.div`
     }
 `;
 
+export const NoTitle = styled.div`
+    width: 100%;
+    padding: 20px;
+    .text {
+        width: 100%;
+        // border: 1px solid ${borderColor};
+        border-radius: 5px;
+        padding: 30px;
+        text-align: center;
+    }
+`;
+
 export const InputStyle = styled.input<InputProps>`
     width: 100%;
     height: ${(props) => props.height};
@@ -55,6 +67,7 @@ export const InputStyle = styled.input<InputProps>`
     font-family: ${(props) => props.fontFamily};
     &:focus {
         outline: none;
+        border: 1px solid ${activeColor};
     }
     &::placeholder {
         color: #fff;

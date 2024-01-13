@@ -8,6 +8,11 @@ export const HomeWrap = styled.div`
 export const PostWrap = styled.div`
     width: 100%;
     padding-bottom: 51px;
+    .moreBtn {
+        height: 40px;
+        background: transparent;
+        border: none;
+    }
 `;
 
 export const HomeTabs = styled.div`

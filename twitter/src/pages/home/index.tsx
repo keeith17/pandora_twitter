@@ -1,4 +1,4 @@
-import { TopTitle } from "@/component/Style";
+import { NoTitle, TopTitle } from "@/component/Style";
 import { HomeTabs, HomeWrap, PostWrap } from "./homeStyle";
 import PostForm from "@/component/post/PostForm";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
@@ -84,11 +84,11 @@ export default function HomePage() {
                             )
                         )
                     ) : (
-                        <div className="post__no-posts">
-                            <div className="post__text">
-                                작성된 글이 없습니다.
+                        <NoTitle>
+                            <div className="text">
+                                해당하는 게시 글이 없습니다
                             </div>
-                        </div>
+                        </NoTitle>
                     )}
                 </PostWrap>
             )}

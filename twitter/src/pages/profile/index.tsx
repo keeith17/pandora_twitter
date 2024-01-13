@@ -1,5 +1,5 @@
 import { userState } from "@/atom";
-import { ButtonStyle, TopTitle } from "@/component/Style";
+import { ButtonStyle, NoTitle, TopTitle } from "@/component/Style";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { Profile, ProfileTabs, ProfileText } from "./profileStyle";
@@ -57,9 +57,12 @@ export default function ProfilePage() {
         }
     };
 
-    const { data: myPosts } = useQuery("FetchMyPosts", FetchMyPosts);
-    const { data: likePosts } = useQuery("FetchLikePosts", FetchLikePosts);
-    console.log(likePosts);
+    const { data: myPosts } = useQuery("FetchMyPosts", FetchMyPosts, {
+        staleTime: 20000,
+    });
+    const { data: likePosts } = useQuery("FetchLikePosts", FetchLikePosts, {
+        staleTime: 20000,
+    });
     return (
         <div className="profile">
             <TopTitle>
@@ -121,11 +124,11 @@ export default function ProfilePage() {
                             <PostBox post={post} key={post.id} />
                         ))
                     ) : (
-                        <div className="post__no-posts">
-                            <div className="post__text">
+                        <NoTitle>
+                            <div className="text">
                                 해당하는 게시 글이 없습니다
                             </div>
-                        </div>
+                        </NoTitle>
                     )}
                 </div>
             )}
@@ -136,11 +139,11 @@ export default function ProfilePage() {
                             <PostBox post={post} key={post.id} />
                         ))
                     ) : (
-                        <div className="post__no-posts">
-                            <div className="post__text">
+                        <NoTitle>
+                            <div className="text">
                                 해당하는 게시 글이 없습니다
                             </div>
-                        </div>
+                        </NoTitle>
                     )}
                 </div>
             )}

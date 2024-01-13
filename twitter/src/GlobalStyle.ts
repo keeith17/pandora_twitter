@@ -4,7 +4,7 @@ import nexonGothic from "./assets/fonts/NEXON_Lv2_Gothic_Light.ttf";
 
 export const borderColor = "#708090";
 export const backgroundColor = "#1e293b";
-export const activeColor = "#60a5fa";
+export const activeColor = "#7a68a0";
 export const grayText = "#9ca3af";
 export const danger = "#681313";
 export const grayDark = "#3f434d";
