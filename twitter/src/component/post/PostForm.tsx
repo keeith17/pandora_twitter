@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ButtonStyle, DropdownStyle, InputStyle } from "../Style";
+import { ButtonStyle, InputStyle } from "../Style";
 import { FormWrapStyle } from "./PostStyle";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/atom";
