@@ -5,6 +5,7 @@ import NotificationsPage from "@/pages/notifications";
 import PostDetail from "@/pages/posts/detail";
 import PostEdit from "@/pages/posts/edit";
 import ProfilePage from "@/pages/profile";
+import ProfileEditPage from "@/pages/profile/edit";
 import SearchPage from "@/pages/search";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useRecoilValue } from "recoil";
@@ -19,6 +20,7 @@ export default function Router() {
                     <Route path="/posts/:id" element={<PostDetail />} />
                     <Route path="/posts/edit/:id" element={<PostEdit />} />
                     <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/profile/edit" element={<ProfileEditPage />} />
                     <Route path="/search" element={<SearchPage />} />
                     <Route
                         path="/notifications"

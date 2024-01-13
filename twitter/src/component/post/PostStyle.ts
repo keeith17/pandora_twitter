@@ -21,27 +21,19 @@ export const FormWrapStyle = styled.form`
             color: ${grayText};
         }
     }
-    .hashTags {
-        width: 100%;
-        height: 40px;
-        display: flex;
-        justify-content: space-between;
-        .selectBox {
-            width: 30%;
-        }
-        .inputBox {
-            width: 70%;
-        }
-    }
     .submitArea {
         width: 100%;
-        height: 40px;
+        height: 45px;
         border-bottom: 1px solid ${borderColor};
         display: flex;
         padding: 3px;
-        justify-content: flex-end;
+        justify-content: space-between;
+        .inputBox {
+            width: 60%;
+        }
         .buttonBox {
             width: 20%;
+            padding: 3px;
         }
     }
 `;

@@ -43,7 +43,7 @@ export function PostBox({ post }: PostBoxProps) {
         e.preventDefault();
         const postRef = doc(db, "posts", post.id);
         // 좋아요가 돼 있는 경우 -> 삭제
-        if (user.uid && post?.likes?.includes(user?.uid)) {
+        if (user?.uid && post?.likes?.includes(user?.uid)) {
             await updateDoc(postRef, {
                 likes: arrayRemove(user?.uid),
                 likeCount: post?.likeCount ? post?.likeCount - 1 : 0,
@@ -83,9 +83,6 @@ export function PostBox({ post }: PostBoxProps) {
                                 {post?.createdAt.slice(6)}
                             </div>
                         </div>
-                        <div className="hashTag">
-                            <span className="hashTagLine">{post.hashTag}</span>
-                        </div>
                     </div>
                 </div>
                 <Link to={`/posts/${post?.id}`}>
@@ -123,7 +120,7 @@ export function PostBox({ post }: PostBoxProps) {
                     className="postLike"
                     onClick={toggleLike}
                 >
-                    {user.uid && post?.likes?.includes(user.uid) ? (
+                    {user?.uid && post?.likes?.includes(user.uid) ? (
                         <AiFillHeart />
                     ) : (
                         <AiOutlineHeart />

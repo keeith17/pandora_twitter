@@ -93,7 +93,7 @@ export default function MenuList() {
                     <IoMdNotificationsOutline />
                     <span className="text">알림</span>
                 </button>
-                {user.uid === null ? (
+                {user === null ? (
                     <button
                         type="button"
                         className={

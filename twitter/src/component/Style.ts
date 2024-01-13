@@ -26,6 +26,7 @@ export const TopTitle = styled.div`
     margin: 0 auto;
     top: 0;
     display: flex;
+    flex-flow: wrap;
     align-items: center;
     border-bottom: 1px solid ${borderColor};
     .title {

@@ -12,7 +12,6 @@ export default function PostForm() {
     const queryClient = useQueryClient();
     const user = useRecoilValue(userState);
     const [content, setContent] = useState<string>("");
-    const [hashTag, setHashTag] = useState<string>("notice");
     const [imgUrl, setImgUrl] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -20,7 +19,6 @@ export default function PostForm() {
     const handleChange = (
         e:
             | React.ChangeEvent<HTMLInputElement>
-            | React.ChangeEvent<HTMLSelectElement>
             | React.ChangeEvent<HTMLTextAreaElement>
     ) => {
         const {
@@ -28,9 +26,6 @@ export default function PostForm() {
         } = e;
         if (name === "postMsg") {
             setContent(value);
-        }
-        if (name === "hashtag") {
-            setHashTag(value);
         }
         if (name === "imgUrl") {
             setImgUrl(value);
@@ -52,13 +47,11 @@ export default function PostForm() {
                     second: "2-digit",
                 }),
                 uid: user?.uid,
-                hashTag: hashTag,
                 imgUrl: imgUrl,
                 profileUrl: user?.photoURL,
             });
             await queryClient.invalidateQueries("AllPosts");
             setContent("");
-            setHashTag("notice");
             setImgUrl("");
             toast.success("게시글을 생성했습니다");
         } catch (error) {
@@ -85,21 +78,7 @@ export default function PostForm() {
                 value={content}
                 onChange={handleChange}
             />
-            <div className="hashTags">
-                <div className="selectBox">
-                    <DropdownStyle
-                        value={hashTag}
-                        name="hashtag"
-                        id="hashtag"
-                        height="100%"
-                        fontFamily="nexonGothic"
-                        onChange={handleChange}
-                    >
-                        <option value="notice">공지</option>
-                        <option value="share">공유</option>
-                        <option value="talk">사담</option>
-                    </DropdownStyle>
-                </div>
+            <div className="submitArea">
                 <div className="inputBox">
                     <InputStyle
                         value={imgUrl}
@@ -114,8 +93,6 @@ export default function PostForm() {
                         onChange={handleChange}
                     />
                 </div>
-            </div>
-            <div className="submitArea">
                 <div className="buttonBox">
                     <ButtonStyle
                         type="submit"

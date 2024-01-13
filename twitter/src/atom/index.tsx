@@ -1,5 +1,5 @@
 import { app } from "@/firebaseApp";
-import { getAuth } from "firebase/auth";
+import { User, getAuth } from "firebase/auth";
 import { atom } from "recoil";
 const auth = getAuth(app);
 
@@ -10,9 +10,10 @@ export interface authUserProps {
     photoURL: string | null;
 }
 
-export const userState = atom<authUserProps>({
+export const userState = atom<User | null>({
     key: "userState",
-    default: { uid: null, email: null, displayName: null, photoURL: null },
+    default: null,
+    dangerouslyAllowMutability: true,
 });
 
 export const initState = atom<boolean>({

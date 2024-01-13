@@ -13,16 +13,18 @@ const AuthManager = () => {
     useEffect(() => {
         const userInfo = onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
-                const { uid, email, displayName, photoURL } = authUser;
-                setUser({ uid, email, displayName, photoURL });
+                // const { uid, email, displayName, photoURL } = authUser;
+                // setUser({ uid, email, displayName, photoURL });
+                setUser(authUser);
                 setIsAuth(true);
             } else {
-                setUser({
-                    uid: null,
-                    email: null,
-                    displayName: null,
-                    photoURL: null,
-                });
+                // setUser({
+                //     uid: null,
+                //     email: null,
+                //     displayName: null,
+                //     photoURL: null,
+                // });
+                setUser(null);
                 setIsAuth(false);
             }
             setIsInit(true);
