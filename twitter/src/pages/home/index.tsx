@@ -316,7 +316,7 @@ export default function HomePage() {
                 {activeTab === "all" &&
                     AllPosts &&
                     (AllPosts.pages[0].data.length > 0 ? (
-                        <div>
+                        <>
                             {AllPosts?.pages.map((page, pageIndex) => (
                                 <React.Fragment key={pageIndex}>
                                     {page?.data.map((post) => (
@@ -337,7 +337,7 @@ export default function HomePage() {
                                         더 보기
                                     </ButtonStyle>
                                 ))}
-                        </div>
+                        </>
                     ) : (
                         <NoTitle>
                             <div className="text">

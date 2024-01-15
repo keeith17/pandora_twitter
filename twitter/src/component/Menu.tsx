@@ -38,7 +38,7 @@ const FooterStyle = styled.div`
             font-size: 15px;
             font-family: "nexonGothic";
             background: transparent;
-            padding: 16px 0;
+            padding: 14px 0;
             backdrop-filter: blur(10px);
             cursor: pointer;
             &.select {
@@ -63,24 +63,21 @@ export default function MenuList() {
                     className={location.pathname === "/" ? "select" : ""}
                     onClick={() => navigate("/")}
                 >
-                    <BsHouse />
-                    <span className="text">홈</span>
+                    <BsHouse size={21} />
                 </button>
                 <button
                     type="button"
                     className={location.pathname === "/profile" ? "select" : ""}
                     onClick={() => navigate("/profile")}
                 >
-                    <FaUserCircle />
-                    <span className="text">프로필</span>
+                    <FaUserCircle size={21} />
                 </button>
                 <button
                     type="button"
                     className={location.pathname === "/message" ? "select" : ""}
                     onClick={() => navigate("/message")}
                 >
-                    <MdOutlineMessage />
-                    <span className="text">메시지</span>
+                    <MdOutlineMessage size={21} />
                 </button>
                 <button
                     type="button"
@@ -89,8 +86,7 @@ export default function MenuList() {
                     }
                     onClick={() => navigate("/notifications")}
                 >
-                    <IoMdNotificationsOutline />
-                    <span className="text">알림</span>
+                    <IoMdNotificationsOutline size={21} />
                 </button>
                 {user === null ? (
                     <button
@@ -100,8 +96,7 @@ export default function MenuList() {
                         }
                         onClick={() => navigate("/")}
                     >
-                        <MdLogin />
-                        <span className="text">로그인</span>
+                        <MdLogin size={21} />
                     </button>
                 ) : (
                     <button
@@ -112,8 +107,7 @@ export default function MenuList() {
                             toast.success("로그아웃 되었습니다");
                         }}
                     >
-                        <MdLogout />
-                        <span className="text">로그아웃</span>
+                        <MdLogout size={21} />
                     </button>
                 )}
             </div>
