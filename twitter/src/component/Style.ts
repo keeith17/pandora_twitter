@@ -78,10 +78,14 @@ export const DropdownStyle = styled.select<DropdownProps>`
     width: 100%;
     height: ${(props) => props.height};
     font-family: ${(props) => props.fontFamily};
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    text-align-last: center;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
     text-align: center;
-    // text-indent: 5px;
     background: transparent;
-    // border: 1px solid #fff;
     border: none;
     border-radius: 3px;
     caret-color: #fff;
