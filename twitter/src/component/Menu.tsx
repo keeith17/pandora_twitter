@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useRecoilValue } from "recoil";
 import { BsHouse } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
-import { MdLogout, MdLogin } from "react-icons/md";
+import { MdLogout, MdLogin, MdOutlineMessage } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -77,11 +77,11 @@ export default function MenuList() {
                 </button>
                 <button
                     type="button"
-                    className={location.pathname === "/search" ? "select" : ""}
-                    onClick={() => navigate("/search")}
+                    className={location.pathname === "/message" ? "select" : ""}
+                    onClick={() => navigate("/message")}
                 >
-                    <AiOutlineSearch />
-                    <span className="text">검색</span>
+                    <MdOutlineMessage />
+                    <span className="text">메시지</span>
                 </button>
                 <button
                     type="button"

@@ -1,4 +1,4 @@
-import { activeColor, borderColor } from "@/GlobalStyle";
+import { activeColor, borderColor, grayText } from "@/GlobalStyle";
 import styled from "@emotion/styled";
 
 interface InputProps {
@@ -70,7 +70,7 @@ export const InputStyle = styled.input<InputProps>`
         border: 1px solid ${activeColor};
     }
     &::placeholder {
-        color: #fff;
+        color: ${grayText};
     }
 `;
 

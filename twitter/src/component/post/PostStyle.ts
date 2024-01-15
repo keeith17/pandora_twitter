@@ -3,24 +3,41 @@ import styled from "@emotion/styled";
 
 export const FormWrapStyle = styled.form`
     width: 100%;
-    textarea {
+    .inputArea {
         width: 100%;
-        height: 120px;
-        background: transparent;
-        font-family: "nexonGothic";
-        font-size: 20px;
-        color: #fff;
-        padding: 16px;
-        border: none;
-        resize: none;
-        outline: none;
         border-bottom: 1px solid ${borderColor};
-        caret-color: #fff;
-        &::placeholder {
+        textarea {
+            width: 100%;
+            height: 130px;
+            background: transparent;
             font-family: "nexonGothic";
-            color: ${grayText};
+            font-size: 20px;
+            color: #fff;
+            padding: 16px;
+            border: none;
+            resize: none;
+            outline: none;
+            caret-color: #fff;
+            &::placeholder {
+                font-family: "nexonGothic";
+                color: ${grayText};
+            }
+        }
+        .inputBox {
+            width: 100%;
+            height: 40px;
+            background: rgba(112, 128, 144, 0.1);
+            input {
+                &::placeholder {
+                    color: ${grayText};
+                }
+                &:focus {
+                    border: none;
+                }
+            }
         }
     }
+
     .submitArea {
         width: 100%;
         height: 45px;
@@ -28,8 +45,21 @@ export const FormWrapStyle = styled.form`
         display: flex;
         padding: 3px;
         justify-content: space-between;
+        .dropBox {
+            width: 20%;
+            height: 100%;
+        }
         .inputBox {
             width: 60%;
+            height: 100%;
+            input {
+                &::placeholder {
+                    color: ${grayText};
+                }
+                &:focus {
+                    border: none;
+                }
+            }
         }
         .buttonBox {
             width: 20%;
@@ -46,7 +76,7 @@ export const PostBoxStyle = styled.div`
         padding: 0 10px;
         .postFlex {
             display: flex;
-            gap: 4px;
+            gap: 10px;
             align-items: center;
 
             .img,
@@ -54,7 +84,6 @@ export const PostBoxStyle = styled.div`
                 width: 35px;
                 height: 35px;
                 border-radius: 50%;
-                margin-right: 10px;
                 object-fit: cover;
             }
 
@@ -87,6 +116,7 @@ export const PostBoxStyle = styled.div`
                 display: block;
                 font-weight: 500;
                 padding: 16px 4px;
+                whitespace: "pre-line";
                 .imgDiv {
                     padding: 10px;
                 }

@@ -22,6 +22,7 @@ interface PostBoxProps {
 }
 
 export function PostBox({ post }: PostBoxProps) {
+    const PROFILE_DEFAULT_URL = "/images/seederEdit.webp";
     const user = useRecoilValue(userState);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -66,7 +67,11 @@ export function PostBox({ post }: PostBoxProps) {
                     {user?.photoURL ? (
                         <div className="imgBox">
                             <img
-                                src={user?.photoURL}
+                                src={
+                                    post.profileUrl
+                                        ? post.profileUrl
+                                        : PROFILE_DEFAULT_URL
+                                }
                                 alt="profile"
                                 className="img"
                             />
@@ -77,7 +82,7 @@ export function PostBox({ post }: PostBoxProps) {
                     <div className="flexBetween">
                         <div className="postFlex">
                             <div className="email">
-                                {user?.displayName ? user?.displayName : "익명"}
+                                {post?.nickname ? post?.nickname : "no name"}
                             </div>
                             <div className="createdAt">
                                 {post?.createdAt.slice(6)}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ButtonStyle, InputStyle } from "../Style";
+import { ButtonStyle, DropdownStyle, InputStyle } from "../Style";
 import { FormWrapStyle } from "./PostStyle";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/atom";
@@ -13,6 +13,7 @@ export default function PostForm() {
     const user = useRecoilValue(userState);
     const [content, setContent] = useState<string>("");
     const [imgUrl, setImgUrl] = useState<string>("");
+    const [tag, setTag] = useState<string>("talk");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     //입력
@@ -20,6 +21,7 @@ export default function PostForm() {
         e:
             | React.ChangeEvent<HTMLInputElement>
             | React.ChangeEvent<HTMLTextAreaElement>
+            | React.ChangeEvent<HTMLSelectElement>
     ) => {
         const {
             target: { name, value },
@@ -29,6 +31,9 @@ export default function PostForm() {
         }
         if (name === "imgUrl") {
             setImgUrl(value);
+        }
+        if (name === "tag") {
+            setTag(value);
         }
     };
 
@@ -49,11 +54,14 @@ export default function PostForm() {
                 }),
                 uid: user?.uid,
                 imgUrl: imgUrl,
+                tag: tag,
+                nickname: user?.displayName,
                 profileUrl: user?.photoURL,
             });
             await queryClient.invalidateQueries("AllPosts");
             setContent("");
             setImgUrl("");
+            setTag("talk");
             toast.success("게시글을 생성했습니다");
         } catch (error) {
             console.log(error);
@@ -72,21 +80,39 @@ export default function PostForm() {
 
     return (
         <FormWrapStyle onSubmit={handleSubmit}>
-            <textarea
-                name="postMsg"
-                id="postMsg"
-                placeholder="메시지를 입력해 주세요"
-                value={content}
-                onChange={handleChange}
-            />
+            <div className="inputArea">
+                <textarea
+                    name="postMsg"
+                    id="postMsg"
+                    placeholder="메시지를 입력해 주세요"
+                    value={content}
+                    onChange={handleChange}
+                />
+            </div>
             <div className="submitArea">
+                <div className="dropBox">
+                    <DropdownStyle
+                        height="100%"
+                        fontFamily="nexonGothic"
+                        name="tag"
+                        value={tag}
+                        onChange={handleChange}
+                    >
+                        {user?.uid === "FYDRcBpPxnbDiPrb9cK7CGL6Man2" && (
+                            <option value="notice">공지</option>
+                        )}
+                        <option value="talk">사담</option>
+                        <option value="share">정보</option>
+                        <option value="hotlink">긴급</option>
+                    </DropdownStyle>
+                </div>
                 <div className="inputBox">
                     <InputStyle
                         value={imgUrl}
                         name="imgUrl"
                         id="imgUrl"
                         type="text"
-                        placeholder="이미지 주소 입력"
+                        placeholder="이미지 url"
                         fontSize="13px"
                         fontFamily="nexonGothic"
                         height="100%"

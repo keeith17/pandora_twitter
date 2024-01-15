@@ -24,8 +24,6 @@ export default defineConfig(({ mode }) => {
                 REACT_APP_MESSAGING_SENDER_ID:
                     env.REACT_APP_MESSAGING_SENDER_ID,
                 REACT_APP_APP_ID: env.REACT_APP_APP_ID,
-                REACT_APP_ALGOLIA_ID: env.REACT_APP_ALGOLIA_ID,
-                REACT_APP_ALGOLIA_SEARCH_KEY: env.REACT_APP_ALGOLIA_SEARCH_KEY,
             },
         },
     };
