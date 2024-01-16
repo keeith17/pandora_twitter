@@ -6,7 +6,6 @@ import { ProfileEditForm, ProfileEditStyle } from "./profileStyle";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/atom";
-import { FaUserCircle } from "react-icons/fa";
 import { useMutation } from "react-query";
 import { v4 as uuidv4 } from "uuid";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
@@ -16,6 +15,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import Loader from "@/component/loader/Loader";
 
+const PROFILE_DEFAULT_URL = "/images/seederEdit.webp";
 export default function ProfileEditPage() {
     const navigate = useNavigate();
     const user = useRecoilValue(userState);
@@ -73,6 +73,7 @@ export default function ProfileEditPage() {
             const key = `${user?.uid}/${uuidv4()}`;
             const storageRef = ref(storage, key);
             let newImageUrl = null;
+
             //이미지 업로드
             if (imageChanged) {
                 if (imageUrl) {
@@ -83,7 +84,7 @@ export default function ProfileEditPage() {
                     );
                     newImageUrl = await getDownloadURL(data?.ref);
                 } else {
-                    newImageUrl = null;
+                    newImageUrl = PROFILE_DEFAULT_URL;
                 }
             } else {
                 newImageUrl = user?.photoURL;
@@ -155,16 +156,12 @@ export default function ProfileEditPage() {
                     </div>
 
                     <div className="attachment">
-                        {imageUrl ? (
-                            <img
-                                src={imageUrl}
-                                alt="attachment"
-                                width={120}
-                                height={120}
-                            />
-                        ) : (
-                            <FaUserCircle size={120} />
-                        )}
+                        <img
+                            src={imageUrl ? imageUrl : PROFILE_DEFAULT_URL}
+                            alt="attachment"
+                            width={120}
+                            height={120}
+                        />
 
                         <div className="buttonBox">
                             <div className="imageArea">

@@ -60,7 +60,7 @@ export default function FirstPage() {
             setNickname(value);
         }
     };
-
+    console.log(user);
     const { mutate: submit, isLoading } = useMutation(
         async () => {
             const key = `${user?.uid}/${uuidv4()}`;
@@ -82,8 +82,8 @@ export default function FirstPage() {
                     imageUrl: newImageUrl,
                 });
                 await updateProfile(user, {
-                    displayName: nickname || "",
-                    photoURL: newImageUrl || "",
+                    displayName: nickname || null,
+                    photoURL: newImageUrl || null,
                 });
             }
         },
@@ -97,7 +97,8 @@ export default function FirstPage() {
         }
     );
 
-    const onSubmit = async () => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         submit();
     };
 

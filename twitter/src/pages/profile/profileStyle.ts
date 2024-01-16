@@ -13,6 +13,7 @@ export const Profile = styled.div`
         border-radius: 50%;
         width: 100px;
         height: 100px;
+        object-fit: cover;
     }
     .profileEdit {
         width: 60px;
@@ -83,6 +84,9 @@ export const ProfileEditForm = styled.form`
             gap: 20px;
             align-items: flex-end;
             border-bottom: 1px solid ${borderColor};
+            img {
+                object-fit: cover;
+            }
             .buttonBox {
                 width: 50px;
                 .imageArea {
