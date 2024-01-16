@@ -7,9 +7,8 @@ export const HomeWrap = styled.div`
 
 export const PostWrap = styled.div`
     width: 100%;
-    padding-bottom: 51px;
     .moreBtn {
-        height: 40px;
+        height: 50px;
         background: transparent;
         border: none;
     }

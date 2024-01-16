@@ -15,6 +15,7 @@ const LayoutStyle = styled.div`
     border-left: 1px solid ${borderColor};
     border-right: 1px solid ${borderColor};
     min-height: 100vh;
+    padding-bottom: 51px;
 `;
 export const Layout = ({ children }: LayoutProps) => {
     return (

@@ -20,18 +20,20 @@ import { ButtonStyle, NoTitle, TopTitle } from "@/component/Style";
 import PostForm from "@/component/post/PostForm";
 import Loader from "@/component/loader/Loader";
 import { PostBox } from "@/component/post/PostBox";
+import { CommentProps } from "@/component/comment/commentBox";
 
 export interface PostProps {
-    id: string;
+    id: string; // 포스트 아이디
     content: string;
     createdAt: string;
     imgUrl?: string;
-    uid: string;
+    uid: string; // 유저 아이디
     likes?: string[];
     likeCount?: number;
-    comments?: string[];
+    comments?: CommentProps[];
     profileUrl?: string;
     nickname?: string;
+    tag: string;
 }
 
 interface FetchDataResponse {

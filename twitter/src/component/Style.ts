@@ -39,6 +39,11 @@ export const TopTitle = styled.div`
         .text {
             width: 100%;
         }
+        button {
+            background: transparent;
+            border: none;
+            outline: none;
+        }
     }
 `;
 

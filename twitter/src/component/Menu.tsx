@@ -55,13 +55,23 @@ export default function MenuList() {
     const user = useRecoilValue(userState);
     const navigate = useNavigate();
     const location = useLocation();
+    const homeFn = () => {
+        if (location.pathname === "/") {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        } else {
+            navigate("/");
+        }
+    };
     return (
         <FooterStyle>
             <div className="grid">
                 <button
                     type="button"
                     className={location.pathname === "/" ? "select" : ""}
-                    onClick={() => navigate("/")}
+                    onClick={homeFn}
                 >
                     <BsHouse size={21} />
                 </button>

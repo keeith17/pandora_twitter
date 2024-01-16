@@ -15,7 +15,7 @@ export const Profile = styled.div`
         height: 100px;
     }
     .profileEdit {
-        width: 10%;
+        width: 60px;
         height: 30px;
         button {
             border-radius: 50px;

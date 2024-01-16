@@ -1,7 +1,7 @@
 import { borderColor, danger, grayDark, grayText } from "@/GlobalStyle";
 import styled from "@emotion/styled";
 
-export const FormWrapStyle = styled.form`
+export const CommentFormStyle = styled.form`
     width: 100%;
     .inputArea {
         width: 100%;
@@ -68,7 +68,7 @@ export const FormWrapStyle = styled.form`
     }
 `;
 
-export const PostBoxStyle = styled.div`
+export const CommentBoxStyle = styled.div`
     width: 100%;
     padding: 10px 0;
     border-bottom: 1px solid ${borderColor};
@@ -110,6 +110,7 @@ export const PostBoxStyle = styled.div`
                 }
             }
         }
+
         .postContent {
             color: #fff;
             display: block;

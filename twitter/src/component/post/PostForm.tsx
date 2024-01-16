@@ -59,6 +59,10 @@ export default function PostForm() {
                 profileUrl: user?.photoURL,
             });
             await queryClient.invalidateQueries("AllPosts");
+            if (tag === "talk") queryClient.invalidateQueries("TalkPosts");
+            if (tag === "share") queryClient.invalidateQueries("SharePosts");
+            if (tag === "hotlink")
+                queryClient.invalidateQueries("FetchHotPosts");
             setContent("");
             setImgUrl("");
             setTag("talk");

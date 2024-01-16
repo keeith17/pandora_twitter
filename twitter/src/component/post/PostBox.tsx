@@ -90,19 +90,35 @@ export function PostBox({ post }: PostBoxProps) {
                         </div>
                     </div>
                 </div>
-                <Link to={`/posts/${post?.id}`}>
-                    <div className="postContent">{post?.content}</div>
-                    {post?.imgUrl && (
-                        <div className="imgDiv">
-                            <img
-                                src={post?.imgUrl}
-                                alt="postImg"
-                                className="postImg"
-                                width={100}
-                            />
-                        </div>
-                    )}
-                </Link>
+                {location.pathname.includes(post.id) ? (
+                    <>
+                        <div className="postContent">{post?.content}</div>
+                        {post?.imgUrl && (
+                            <div className="imgDiv">
+                                <img
+                                    src={post?.imgUrl}
+                                    alt="postImg"
+                                    className="postImg"
+                                    width={100}
+                                />
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <Link to={`/posts/${post?.id}`}>
+                        <div className="postContent">{post?.content}</div>
+                        {post?.imgUrl && (
+                            <div className="imgDiv">
+                                <img
+                                    src={post?.imgUrl}
+                                    alt="postImg"
+                                    className="postImg"
+                                    width={100}
+                                />
+                            </div>
+                        )}
+                    </Link>
+                )}
             </div>
             <div className="postFooter">
                 {user?.uid === post?.uid && (

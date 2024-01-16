@@ -97,8 +97,7 @@ export default function FirstPage() {
         }
     );
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const onSubmit = async () => {
         submit();
     };
 
@@ -140,6 +139,7 @@ export default function FirstPage() {
                             border="none"
                             placeholder="캐릭터 명"
                             name="charname"
+                            required
                             onChange={onChange}
                         />
                     </div>
@@ -152,6 +152,7 @@ export default function FirstPage() {
                             border="none"
                             placeholder="NETWORK 닉네임"
                             name="nickname"
+                            required
                             onChange={onChange}
                         />
                     </div>
