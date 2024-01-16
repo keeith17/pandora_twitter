@@ -56,3 +56,58 @@ export const ProfileTabs = styled.div`
         }
     }
 `;
+
+export const ProfileEditStyle = styled.div`
+    width: 100%;
+`;
+
+export const ProfileEditForm = styled.form`
+    width: 100%;
+    padding: 16px;
+    .editProfile {
+        .inputBox {
+            width: 100%;
+            border-bottom: 1px solid ${borderColor};
+            input {
+                &:focus {
+                    border: none;
+
+                    outline: none;
+                }
+            }
+        }
+        .attachment {
+            width: 100%;
+            padding: 15px 5px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+            border-bottom: 1px solid ${borderColor};
+            .buttonBox {
+                width: 50px;
+                .imageArea {
+                    padding-bottom: 10px;
+                    label {
+                        cursor: pointer;
+                    }
+                    input[type="file"] {
+                        display: none;
+                    }
+                }
+                button {
+                    height: 25px;
+                }
+            }
+        }
+
+        .submitArea {
+            padding: 15px 5px;
+            display: flex;
+            justify-content: flex-end;
+            .buttonBox {
+                width: 60px;
+                height: 30px;
+            }
+        }
+    }
+`;
