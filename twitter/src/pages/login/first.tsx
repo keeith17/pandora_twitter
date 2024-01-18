@@ -12,12 +12,13 @@ import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import Loader from "@/component/loader/Loader";
 
+export const PROFILE_DEFAULT_URL = "/images/seederEdit.webp";
+
 export default function FirstPage() {
     const user = useRecoilValue(userState);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [charname, setCharname] = useState<string | null>(null);
     const [nickname, setNickname] = useState<string | null>(null);
-    const PROFILE_DEFAULT_URL = "/images/seederEdit.webp";
 
     //이미지 등록
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +61,6 @@ export default function FirstPage() {
             setNickname(value);
         }
     };
-    console.log(user);
     const { mutate: submit, isLoading } = useMutation(
         async () => {
             const key = `${user?.uid}/${uuidv4()}`;

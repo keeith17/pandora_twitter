@@ -36,11 +36,13 @@ export const TopTitle = styled.div`
         font-weight: 700;
         font-size: 20px;
         font-family: "Giants-Inline";
+        display: flex;
         .text {
             width: 100%;
         }
         button {
             background: transparent;
+            height: 28px;
             border: none;
             outline: none;
         }

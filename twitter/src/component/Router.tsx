@@ -10,6 +10,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import MessagePage from "@/pages/message";
 import FirstPage from "@/pages/login/first";
+import NewMessagePage from "@/pages/message/new";
+import ChatRoomPage from "@/pages/message/chat";
 
 export default function Router() {
     const auth = useRecoilValue(authState);
@@ -36,6 +38,11 @@ export default function Router() {
                             element={<ProfileEditPage />}
                         />
                         <Route path="/message" element={<MessagePage />} />
+                        <Route
+                            path="/message/new"
+                            element={<NewMessagePage />}
+                        />
+                        <Route path="/message/:id" element={<ChatRoomPage />} />
                         <Route
                             path="/notifications"
                             element={<NotificationsPage />}

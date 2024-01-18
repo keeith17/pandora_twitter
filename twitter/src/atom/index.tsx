@@ -10,6 +10,13 @@ export interface authUserProps {
     photoURL: string | null;
 }
 
+export interface twitterInfoProps {
+    uid: string;
+    charname: string;
+    imageUrl: string;
+    nickname: string;
+}
+
 export const userState = atom<User | null>({
     key: "userState",
     default: null,
@@ -24,4 +31,9 @@ export const initState = atom<boolean>({
 export const authState = atom<boolean>({
     key: "authState",
     default: !!auth?.currentUser,
+});
+
+export const twiterInfoState = atom<twitterInfoProps[]>({
+    key: "twiterInfoState",
+    default: [],
 });
