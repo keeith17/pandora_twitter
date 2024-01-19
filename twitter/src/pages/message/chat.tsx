@@ -26,7 +26,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { MessageWrapStyle, SendTextStyle } from "./messageStyle";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatRoomsProps } from "@/pages/message";
 import { ChatBox } from "@/component/message/chatBox";
 import React from "react";
@@ -48,11 +48,19 @@ interface FetchDataResponse {
 export default function ChatRoomPage() {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const scrollRef = useRef<HTMLDivElement>(null);
     const user = useRecoilValue(userState);
     const params = useParams();
     const memberList = useRecoilValue(twiterInfoState);
     const [content, setContent] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    //시작하자마자 가장 하단으로 스크롤링
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    }, []);
 
     //메시지들 받아 오기
     const FetchMessage = async ({
@@ -250,7 +258,7 @@ export default function ChatRoomPage() {
                     <div>{partner && uidToName(partner)}</div>
                 </div>
             </TopTitle>
-            <div className="messages">
+            <div ref={scrollRef} className="messages">
                 {messages &&
                     (messages.pages[0].data.length > 0 ? (
                         <>
