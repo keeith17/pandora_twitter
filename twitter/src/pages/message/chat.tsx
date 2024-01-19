@@ -1,24 +1,36 @@
 import { twiterInfoState, userState } from "@/atom";
-import { TopTitle } from "@/component/Style";
+import { ButtonStyle, NoTitle, TopTitle } from "@/component/Style";
 import { db } from "@/firebaseApp";
 import {
+    QueryDocumentSnapshot,
     addDoc,
     collection,
     doc,
     getDoc,
     getDocs,
+    limit,
     orderBy,
     query,
+    startAfter,
     updateDoc,
     where,
 } from "firebase/firestore";
 import { IoIosArrowBack, IoMdSend } from "react-icons/io";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+    UseInfiniteQueryResult,
+    useInfiniteQuery,
+    useMutation,
+    useQuery,
+    useQueryClient,
+} from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { SendTextStyle } from "./messageStyle";
+import { MessageWrapStyle, SendTextStyle } from "./messageStyle";
 import { useState } from "react";
 import { ChatRoomsProps } from "@/pages/message";
+import { ChatBox } from "@/component/message/chatBox";
+import React from "react";
+import Loader from "@/component/loader/Loader";
 
 export interface MessageProps {
     content: string;
@@ -29,7 +41,10 @@ export interface MessageProps {
     participants: string[];
     id: string;
 }
-
+interface FetchDataResponse {
+    data: MessageProps[];
+    cursor: QueryDocumentSnapshot | undefined;
+}
 export default function ChatRoomPage() {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -40,31 +55,81 @@ export default function ChatRoomPage() {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     //메시지들 받아 오기
-    const FetchMessage = async (paramsId: string | undefined) => {
-        if (paramsId) {
-            try {
-                const postRef = collection(db, "messages");
-                const postQuery = query(
-                    postRef,
-                    where("roomId", "==", paramsId),
-                    orderBy("createdAt", "desc")
-                );
-                const querySnapshot = await getDocs(postQuery);
-                const data: MessageProps[] = querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                })) as MessageProps[];
-                return data;
-            } catch (error) {
-                console.error("Error fetching posts:", error);
-            }
-        } else {
-            throw new Error("사용자 UID가 존재하지 않습니다.");
+    const FetchMessage = async ({
+        pageParam,
+    }: {
+        pageParam?: MessageProps;
+    }): Promise<FetchDataResponse> => {
+        try {
+            const postRef = collection(db, "messages");
+            const postQuery = pageParam
+                ? query(
+                      postRef,
+                      where("roomId", "==", params.id),
+                      orderBy("createdAt", "desc"),
+                      startAfter(pageParam),
+                      limit(30)
+                  )
+                : query(
+                      postRef,
+                      where("roomId", "==", params.id),
+                      orderBy("createdAt", "desc"),
+                      limit(30)
+                  );
+
+            const querySnapshot = await getDocs(postQuery);
+            const data = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            })) as MessageProps[];
+
+            return {
+                data,
+                cursor: querySnapshot.docs.length
+                    ? querySnapshot.docs[querySnapshot.docs.length - 1]
+                    : undefined,
+            };
+        } catch (error) {
+            console.log(error);
+            throw new Error("Failed to fetch data");
         }
     };
-    const { data: messages } = useQuery(["messages", params.id], () =>
-        FetchMessage(params.id)
+    const {
+        data: messages,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    }: UseInfiniteQueryResult<FetchDataResponse, Error> = useInfiniteQuery(
+        ["messages", params.id],
+        FetchMessage,
+        {
+            getNextPageParam: (lastPage) => lastPage?.cursor,
+        }
     );
+    // no 무한 버전
+    // const FetchMessage = async () => {
+    //     if (params.id) {
+    //         try {
+    //             const postRef = collection(db, "messages");
+    //             const postQuery = query(
+    //                 postRef,
+    //                 where("roomId", "==", params.id),
+    //                 orderBy("createdAt", "desc")
+    //             );
+    //             const querySnapshot = await getDocs(postQuery);
+    //             const data: MessageProps[] = querySnapshot.docs.map((doc) => ({
+    //                 id: doc.id,
+    //                 ...doc.data(),
+    //             })) as MessageProps[];
+    //             return data;
+    //         } catch (error) {
+    //             console.error("Error fetching posts:", error);
+    //         }
+    //     } else {
+    //         throw new Error("사용자 UID가 존재하지 않습니다.");
+    //     }
+    // };
+    //const { data: messages } = useQuery(["messages", params.id], FetchMessage);
 
     //채팅방 정보 받아오기
     const FetchRoomInfo = async () => {
@@ -88,7 +153,9 @@ export default function ChatRoomPage() {
     );
     //상대방 uid
     const partner = messages
-        ? messages[0].participants.filter((person) => person !== user?.uid)[0]
+        ? messages.pages[0].data[0].participants.filter(
+              (person) => person !== user?.uid
+          )[0]
         : undefined;
 
     //uid를 닉네임으로
@@ -174,7 +241,7 @@ export default function ChatRoomPage() {
         }
     };
     return (
-        <div className="messageWrap">
+        <MessageWrapStyle>
             <TopTitle>
                 <div className="title">
                     <button type="button" onClick={() => navigate("/message")}>
@@ -183,10 +250,55 @@ export default function ChatRoomPage() {
                     <div>{partner && uidToName(partner)}</div>
                 </div>
             </TopTitle>
-            <div>
-                {messages?.map((message, index) => (
-                    <div key={index}>{message.content}</div>
-                ))}
+            <div className="messages">
+                {messages &&
+                    (messages.pages[0].data.length > 0 ? (
+                        <>
+                            <div className="buttonBox">
+                                {messages?.pages[0].data.length >= 30 &&
+                                    hasNextPage &&
+                                    (isFetchingNextPage ? (
+                                        <Loader />
+                                    ) : (
+                                        <ButtonStyle
+                                            fontSize="14px"
+                                            className="moreBtn"
+                                            onClick={() => fetchNextPage()}
+                                            disabled={isFetchingNextPage}
+                                        >
+                                            더 보기
+                                        </ButtonStyle>
+                                    ))}
+                            </div>
+
+                            {messages?.pages
+                                .slice(0)
+                                .reverse()
+                                .map((page, pageIndex) => (
+                                    <React.Fragment key={pageIndex}>
+                                        {page?.data
+                                            .slice(0)
+                                            .reverse()
+                                            .map((message, index) => (
+                                                <ChatBox
+                                                    key={index}
+                                                    message={message}
+                                                />
+                                            ))}
+                                    </React.Fragment>
+                                ))}
+                        </>
+                    ) : (
+                        <NoTitle>
+                            <div className="text">대화가 없습니다</div>
+                        </NoTitle>
+                    ))}
+                {/* {messages
+                    ?.slice(0)
+                    .reverse()
+                    .map((message, index) => (
+                        <ChatBox key={index} message={message} />
+                    ))} */}
             </div>
             <SendTextStyle>
                 <div className="textArea">
@@ -206,6 +318,6 @@ export default function ChatRoomPage() {
                     )}
                 </div>
             </SendTextStyle>
-        </div>
+        </MessageWrapStyle>
     );
 }

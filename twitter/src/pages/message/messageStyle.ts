@@ -3,10 +3,11 @@ import styled from "@emotion/styled";
 
 export const NewMessageStyle = styled.div`
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 51px);
+    position: relative;
     .content {
         width: 100%;
-        height: calc(100vh - 96px);
+        height: calc(100% - 45px);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -71,10 +72,25 @@ export const NewMessageStyle = styled.div`
     }
 `;
 
+export const MessageWrapStyle = styled.div`
+    width: 100%;
+    height: calc(100vh - 51px);
+    position: relative;
+    .messages {
+        width: 100%;
+        height: calc(100% - 195px);
+        overflow-y: scroll;
+        padding: 20px;
+    }
+`;
+
 export const SendTextStyle = styled.div`
     width: 100%;
     height: 150px;
     padding: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     .textArea {
         width: 100%;
         height: 100%;

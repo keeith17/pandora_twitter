@@ -63,3 +63,26 @@ export const ChatRoomWrap = styled.div`
         }
     }
 `;
+
+export const MessageBoxStyle = styled.div`
+    width: 100%;
+    padding: 3px 0;
+    display: flex;
+    &.mine {
+        justify-content: flex-end;
+        .balloon {
+            background: ${borderColor};
+        }
+    }
+    &.yours {
+        justify-content: flex-start;
+        .balloon {
+            background: transparent;
+        }
+    }
+    .balloon {
+        padding: 5px 10px;
+        border-radius: 15px;
+        border: 2px solid ${borderColor};
+    }
+`;

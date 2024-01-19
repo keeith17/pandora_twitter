@@ -73,6 +73,8 @@ export default function FirstPage() {
                     "data_url"
                 );
                 newImageUrl = await getDownloadURL(data?.ref);
+            } else {
+                newImageUrl = PROFILE_DEFAULT_URL;
             }
             if (user) {
                 const twitRef = doc(db, "twiterInfo", user?.uid);

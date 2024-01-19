@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { NewMessageStyle, SendTextStyle } from "./messageStyle";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebaseApp";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { PROFILE_DEFAULT_URL } from "../login/first";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { twiterInfoState, userState } from "@/atom";
 
 export default function NewMessagePage() {
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
     const user = useRecoilValue(userState);
     const memberList = useRecoilValue(twiterInfoState);
@@ -114,6 +115,8 @@ export default function NewMessagePage() {
                 isRead: false,
                 participants: [user?.uid, sendTo],
             });
+            await queryClient.invalidateQueries(["chatRoomInfo", docRef.id]);
+            await queryClient.invalidateQueries(["messages", docRef.id]);
             navigate(`/message/${docRef.id}`);
         } catch (error) {
             console.log(error);
