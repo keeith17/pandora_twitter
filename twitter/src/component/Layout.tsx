@@ -6,6 +6,12 @@ import { borderColor } from "@/GlobalStyle";
 interface LayoutProps {
     children: ReactNode;
 }
+const windowHeight = window.innerHeight;
+// function setFullHeight() {
+//     const windowHeight = window.innerHeight;
+//     return windowHeight;
+// }
+// window.addEventListener("resize", setFullHeight);
 const LayoutStyle = styled.div`
     max-width: 600px;
     width: 100%;
@@ -14,7 +20,7 @@ const LayoutStyle = styled.div`
     position: relative;
     border-left: 1px solid ${borderColor};
     border-right: 1px solid ${borderColor};
-    min-height: 100vh;
+    min-height: ${windowHeight}px;
     padding-bottom: 51px;
 `;
 export const Layout = ({ children }: LayoutProps) => {

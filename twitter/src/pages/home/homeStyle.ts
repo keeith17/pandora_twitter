@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 
 export const HomeWrap = styled.div`
     width: 100%;
+    height: calc(100% - 51px);
 `;
 
 export const PostWrap = styled.div`

@@ -1,9 +1,10 @@
 import { borderColor } from "@/GlobalStyle";
 import styled from "@emotion/styled";
 
+const windowHeight = window.innerHeight;
 export const NewMessageStyle = styled.div`
     width: 100%;
-    height: calc(100vh - 51px);
+    height: calc(${windowHeight}px - 51px);
     position: relative;
     .content {
         width: 100%;
@@ -74,11 +75,11 @@ export const NewMessageStyle = styled.div`
 
 export const MessageWrapStyle = styled.div`
     width: 100%;
-    height: calc(100vh - 51px);
+    height: calc(${windowHeight}px - 51px);
     position: relative;
     .messages {
         width: 100%;
-        height: calc(100% - 195px);
+        height: calc(100% - 175px);
         overflow-y: scroll;
         padding: 20px;
     }
@@ -86,8 +87,8 @@ export const MessageWrapStyle = styled.div`
 
 export const SendTextStyle = styled.div`
     width: 100%;
-    height: 150px;
-    padding: 20px;
+    height: 130px;
+    padding: 10px 20px;
     position: absolute;
     bottom: 0;
     left: 0;

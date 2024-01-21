@@ -9,6 +9,7 @@ export const grayText = "#9ca3af";
 export const danger = "#681313";
 export const grayDark = "#3f434d";
 
+const windowHeight = window.innerHeight;
 export const GlobalStyle = css`
     @font-face {
         font-family: "Giants-Inline";
@@ -31,7 +32,7 @@ export const GlobalStyle = css`
     html,
     body {
         width: 100%;
-        height: 100vh;
+        height: ${windowHeight}px;
     }
 
     body {
