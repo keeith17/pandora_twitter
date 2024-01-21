@@ -68,21 +68,63 @@ export const MessageBoxStyle = styled.div`
     width: 100%;
     padding: 3px 0;
     display: flex;
-    &.mine {
-        justify-content: flex-end;
-        .balloon {
-            background: ${borderColor};
-        }
-    }
-    &.yours {
-        justify-content: flex-start;
-        .balloon {
-            background: transparent;
+    overflow: hidden;
+    gap: 10px;
+    position: relative;
+    .senderPhoto {
+        max-width: 12%;
+        width: 50px;
+        // position: absolute;
+        img {
+            max-width: 100%;
+            border-radius: 50%;
         }
     }
     .balloon {
-        padding: 5px 10px;
-        border-radius: 15px;
-        border: 2px solid ${borderColor};
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        .textArea {
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: 2px solid ${borderColor};
+            white-space: pre-line;
+            word-break: break-all;
+            word-wrap: break-word;
+        }
+    }
+    .subInfo {
+        max-width: 25%;
+        color: ${grayText};
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        .readCheck {
+            color: ${grayText};
+            display: flex;
+        }
+        .sendTime {
+        }
+    }
+    &.mine {
+        flex-direction: row-reverse;
+        .balloon {
+            max-width: 75%;
+            .textArea {
+                background: ${borderColor};
+            }
+        }
+        .subInfo {
+            .readCheck {
+                flex-direction: row-reverse;
+            }
+        }
+    }
+    &.yours {
+        .balloon {
+            max-width: 63%;
+            background: transparent;
+        }
     }
 `;

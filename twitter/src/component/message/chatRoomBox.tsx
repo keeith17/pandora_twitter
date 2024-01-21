@@ -11,7 +11,7 @@ interface RoomData {
     chatRoom: ChatRoomsProps;
 }
 
-export function ChatRoom({ chatRoom }: RoomData) {
+export function ChatRoomBox({ chatRoom }: RoomData) {
     const user = useRecoilValue(userState);
     const navigate = useNavigate();
     const memberList = useRecoilValue(twiterInfoState);
@@ -48,10 +48,11 @@ export function ChatRoom({ chatRoom }: RoomData) {
 
     const deleteNew = useMutation(async () => {
         const postRef = doc(db, "chatRooms", chatRoom.uid);
-        // 좋아요가 돼 있는 경우 -> 삭제
-        await updateDoc(postRef, {
-            newMessage: 0,
-        });
+        if (chatRoom.lastSender !== user?.uid) {
+            await updateDoc(postRef, {
+                newMessage: 0,
+            });
+        }
     });
 
     const handleClick = () => {

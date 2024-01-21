@@ -25,7 +25,7 @@ import {
 } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { MessageWrapStyle, SendTextStyle } from "./messageStyle";
+import { ChatWrapStyle, SendTextStyle } from "./messageStyle";
 import { useEffect, useRef, useState } from "react";
 import { ChatRoomsProps } from "@/pages/message";
 import { ChatBox } from "@/component/message/chatBox";
@@ -37,7 +37,9 @@ export interface MessageProps {
     createdAt: string;
     isRead: boolean;
     roomId: string;
+    senderPhoto: string;
     sendId: string;
+    prevSender: string;
     participants: string[];
     id: string;
 }
@@ -90,7 +92,6 @@ export default function ChatRoomPage() {
                 id: doc.id,
                 ...doc.data(),
             })) as MessageProps[];
-
             return {
                 data,
                 cursor: querySnapshot.docs.length
@@ -179,7 +180,6 @@ export default function ChatRoomPage() {
             return "none";
         }
     };
-
     //메시지 보내기
     const sendChat = useMutation(async () => {
         if (params.id) {
@@ -202,6 +202,10 @@ export default function ChatRoomPage() {
                         : 1,
                     lastSender: user?.uid,
                 });
+                await queryClient.invalidateQueries([
+                    "chatRoomInfo",
+                    params.id,
+                ]);
                 await addDoc(collection(db, "messages"), {
                     roomId: params.id,
                     createdAt: new Date()?.toLocaleDateString("ko", {
@@ -214,15 +218,13 @@ export default function ChatRoomPage() {
                         hour12: false,
                     }),
                     content: content,
+                    senderPhoto: user?.photoURL,
+                    prevSender: chatRoomInfo?.lastSender,
                     sendId: user?.uid,
                     isRead: false,
                     participants: [user?.uid, partner],
                 });
                 setContent("");
-                await queryClient.invalidateQueries([
-                    "chatRoomInfo",
-                    params.id,
-                ]);
                 await queryClient.invalidateQueries(["messages", params.id]);
             } catch (error) {
                 console.log(error);
@@ -248,8 +250,9 @@ export default function ChatRoomPage() {
             setContent(value);
         }
     };
+
     return (
-        <MessageWrapStyle>
+        <ChatWrapStyle>
             <TopTitle>
                 <div className="title">
                     <button type="button" onClick={() => navigate("/message")}>
@@ -287,12 +290,19 @@ export default function ChatRoomPage() {
                                         {page?.data
                                             .slice(0)
                                             .reverse()
-                                            .map((message, index) => (
-                                                <ChatBox
-                                                    key={index}
-                                                    message={message}
-                                                />
-                                            ))}
+                                            .map((message, index) => {
+                                                const isSamePrev = false;
+                                                // setPrevSender(message.sendId);
+                                                return (
+                                                    <ChatBox
+                                                        key={index}
+                                                        message={message}
+                                                        isprofilePhoto={
+                                                            isSamePrev
+                                                        }
+                                                    />
+                                                );
+                                            })}
                                     </React.Fragment>
                                 ))}
                         </>
@@ -326,6 +336,6 @@ export default function ChatRoomPage() {
                     )}
                 </div>
             </SendTextStyle>
-        </MessageWrapStyle>
+        </ChatWrapStyle>
     );
 }

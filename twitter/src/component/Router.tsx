@@ -11,7 +11,7 @@ import { useRecoilValue } from "recoil";
 import MessagePage from "@/pages/message";
 import FirstPage from "@/pages/login/first";
 import NewMessagePage from "@/pages/message/new";
-import ChatRoomPage from "@/pages/message/chat";
+import ChatRoomPage from "@/pages/message/chatPage";
 
 export default function Router() {
     const auth = useRecoilValue(authState);

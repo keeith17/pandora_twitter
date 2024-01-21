@@ -1,12 +1,13 @@
 import { twiterInfoState, twitterInfoProps, userState } from "@/atom";
 import { TopTitle } from "@/component/Style";
-import { ChatRoom } from "@/component/message/chatRoom";
+import { ChatRoomBox } from "@/component/message/chatRoomBox";
 import { db } from "@/firebaseApp";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { FaPlus } from "react-icons/fa6";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { MessageWrapStyle } from "./messageStyle";
 
 export interface ChatRoomsProps {
     uid: string;
@@ -67,7 +68,7 @@ export default function MessagePage() {
     );
 
     return (
-        <div className="messageWrap">
+        <MessageWrapStyle>
             <TopTitle>
                 <div className="title">
                     <div className="text">Direct Message</div>
@@ -79,10 +80,14 @@ export default function MessagePage() {
                     </button>
                 </div>
             </TopTitle>
-            {chatRoomList &&
-                chatRoomList.map((chatRoom: ChatRoomsProps, index: number) => (
-                    <ChatRoom key={index} chatRoom={chatRoom} />
-                ))}
-        </div>
+            <div className="chatRoomList">
+                {chatRoomList &&
+                    chatRoomList.map(
+                        (chatRoom: ChatRoomsProps, index: number) => (
+                            <ChatRoomBox key={index} chatRoom={chatRoom} />
+                        )
+                    )}
+            </div>
+        </MessageWrapStyle>
     );
 }

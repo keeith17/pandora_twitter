@@ -73,22 +73,28 @@ export const NewMessageStyle = styled.div`
     }
 `;
 
-export const MessageWrapStyle = styled.div`
+export const ChatWrapStyle = styled.div`
     width: 100%;
     height: calc(${windowHeight}px - 51px);
     position: relative;
     .messages {
         width: 100%;
-        height: calc(100% - 175px);
+        height: calc(100% - 155px);
         overflow-y: scroll;
-        padding: 20px;
+        padding: 10px;
+        .buttonBox {
+            padding: 5px 0;
+            button {
+                padding: 3px 0;
+            }
+        }
     }
 `;
 
 export const SendTextStyle = styled.div`
     width: 100%;
-    height: 130px;
-    padding: 10px 20px;
+    height: 110px;
+    padding: 10px;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -117,5 +123,15 @@ export const SendTextStyle = styled.div`
             border: none;
             padding: 3px;
         }
+    }
+`;
+
+export const MessageWrapStyle = styled.div`
+    width: 100%;
+    height: calc(${windowHeight}px - 51px);
+    .chatRoomList {
+        width: 100%;
+        height: calc(100% - 45px);
+        overflow-y: scroll;
     }
 `;

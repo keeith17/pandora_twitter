@@ -55,37 +55,46 @@ export default function MenuList() {
     const user = useRecoilValue(userState);
     const navigate = useNavigate();
     const location = useLocation();
-    const homeFn = () => {
-        if (location.pathname === "/") {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-            });
-        } else {
-            navigate("/");
-        }
-    };
+
     return (
         <FooterStyle>
             <div className="grid">
                 <button
                     type="button"
                     className={location.pathname === "/" ? "select" : ""}
-                    onClick={homeFn}
+                    onClick={() => {
+                        navigate("/");
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth",
+                        });
+                    }}
                 >
                     <BsHouse size={21} />
                 </button>
                 <button
                     type="button"
                     className={location.pathname === "/profile" ? "select" : ""}
-                    onClick={() => navigate("/profile")}
+                    onClick={() => {
+                        navigate("/profile");
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth",
+                        });
+                    }}
                 >
                     <FaUserCircle size={21} />
                 </button>
                 <button
                     type="button"
                     className={location.pathname === "/message" ? "select" : ""}
-                    onClick={() => navigate("/message")}
+                    onClick={() => {
+                        navigate("/message");
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth",
+                        });
+                    }}
                 >
                     <MdOutlineMessage size={21} />
                 </button>
@@ -94,7 +103,13 @@ export default function MenuList() {
                     className={
                         location.pathname === "/notifications" ? "select" : ""
                     }
-                    onClick={() => navigate("/notifications")}
+                    onClick={() => {
+                        navigate("/notifications");
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth",
+                        });
+                    }}
                 >
                     <IoMdNotificationsOutline size={21} />
                 </button>
