@@ -37,24 +37,24 @@ export default function PostDetail() {
                         <IoIosArrowBack className="backButton" size={20} />
                     </button>
                 </div>
-                {herepost && (
-                    <>
-                        <PostBox post={herepost} />
-                        <CommentForm post={herepost} />
-                        {herepost?.comments &&
-                            herepost.comments
-                                .slice(0)
-                                .reverse()
-                                .map((comment: CommentProps, index: number) => (
-                                    <CommentBox
-                                        comment={comment}
-                                        key={index}
-                                        post={herepost}
-                                    />
-                                ))}
-                    </>
-                )}
             </TopTitle>
+            {herepost && (
+                <>
+                    <PostBox post={herepost} />
+                    <CommentForm post={herepost} />
+                    {herepost?.comments &&
+                        herepost.comments
+                            .slice(0)
+                            .reverse()
+                            .map((comment: CommentProps, index: number) => (
+                                <CommentBox
+                                    comment={comment}
+                                    key={index}
+                                    post={herepost}
+                                />
+                            ))}
+                </>
+            )}
         </div>
     );
 }

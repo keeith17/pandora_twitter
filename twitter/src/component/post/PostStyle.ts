@@ -96,17 +96,11 @@ export const PostBoxStyle = styled.div`
                     font-size: 12px;
                     color: ${grayText};
                 }
-                .hashTag {
-                    background: transparent;
-                    padding: 4px 10px;
-                    border-radius: 20px;
-                    display: flex;
-                    align-items: center;
-                    .hashTagLine {
-                        font-size: 13px;
-                        color: #fff;
-                        font-weight: 600;
-                    }
+                .tagged {
+                    font-size: 12px;
+                    background: ${borderColor};
+                    padding: 3px 5px;
+                    border-radius: 8px;
                 }
             }
         }

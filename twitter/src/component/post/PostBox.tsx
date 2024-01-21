@@ -27,6 +27,22 @@ export function PostBox({ post }: PostBoxProps) {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
+    //말머리 출력 변경
+    const tagEngtoKor = (tagEng: string) => {
+        if (tagEng === "notice") {
+            return "공지";
+        }
+        if (tagEng === "talk") {
+            return "사담";
+        }
+        if (tagEng === "share") {
+            return "정보";
+        }
+        if (tagEng === "hotlink") {
+            return "긴급";
+        }
+    };
+
     //게시 글 삭제
     const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -86,6 +102,9 @@ export function PostBox({ post }: PostBoxProps) {
                             </div>
                             <div className="createdAt">
                                 {post?.createdAt.slice(6)}
+                            </div>
+                            <div className="tagged">
+                                {tagEngtoKor(post?.tag)}
                             </div>
                         </div>
                     </div>
