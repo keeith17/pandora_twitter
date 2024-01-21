@@ -53,7 +53,7 @@ export default function ChatRoomPage() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const user = useRecoilValue(userState);
     const params = useParams();
-    const memberList = useRecoilValue(twiterInfoState);
+    // const memberList = useRecoilValue(twiterInfoState);
     const [content, setContent] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 

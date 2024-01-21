@@ -21,6 +21,8 @@ export default function ProfileEditPage() {
     const user = useRecoilValue(userState);
     const [displayName, setDisplayName] = useState<string>("");
     const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [imageChanged, setImageChanged] = useState<boolean>(false);
+    console.log(user);
     //사진 교환
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {

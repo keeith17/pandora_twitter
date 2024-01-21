@@ -1,8 +1,21 @@
-import { twiterInfoState, twitterInfoProps, userState } from "@/atom";
+import {
+    myInfoState,
+    twiterInfoState,
+    twitterInfoProps,
+    userState,
+} from "@/atom";
 import { TopTitle } from "@/component/Style";
 import { ChatRoomBox } from "@/component/message/chatRoomBox";
 import { db } from "@/firebaseApp";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    orderBy,
+    query,
+    where,
+} from "firebase/firestore";
 import { FaPlus } from "react-icons/fa6";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +35,31 @@ export default function MessagePage() {
     const navigate = useNavigate();
     const user = useRecoilValue(userState);
     const setTwitterInfo = useSetRecoilState(twiterInfoState);
+    const setMyinfo = useSetRecoilState(myInfoState);
+
+    //내 트윗 정보 페치
+
+    const FetchMyInfo = async () => {
+        if (user) {
+            try {
+                const docRef = doc(db, "twiterInfo", user?.uid);
+                const postSnap = await getDoc(docRef);
+                const data = {
+                    ...postSnap?.data(),
+                    uid: user.uid,
+                } as twitterInfoProps;
+                setMyinfo(data);
+                return data;
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
+        }
+    };
+
+    const { data: MyInfo } = useQuery("myInfo", FetchMyInfo, {
+        staleTime: 60000,
+    });
+
     // 멤버 리스트 페치
     const FetchMemberList = async () => {
         const postRef = collection(db, "twiterInfo");

@@ -6,9 +6,9 @@ import { useRecoilValue } from "recoil";
 import { userState } from "@/atom";
 import { db, storage } from "@/firebaseApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { updateProfile } from "firebase/auth";
+import { updatePhoneNumber, updateProfile } from "firebase/auth";
 import { useMutation } from "react-query";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import Loader from "@/component/loader/Loader";
 
@@ -78,10 +78,16 @@ export default function FirstPage() {
             }
             if (user) {
                 const twitRef = doc(db, "twiterInfo", user?.uid);
+                const charRef = doc(db, "character", user?.uid);
                 await setDoc(twitRef, {
                     charname: charname,
                     nickname: nickname,
                     imageUrl: newImageUrl,
+                    credit: 0,
+                    leftMsg: 30,
+                });
+                await updateDoc(charRef, {
+                    credit: 0,
                 });
                 await updateProfile(user, {
                     displayName: nickname || null,

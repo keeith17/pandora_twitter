@@ -3,18 +3,13 @@ import { User, getAuth } from "firebase/auth";
 import { atom } from "recoil";
 const auth = getAuth(app);
 
-export interface authUserProps {
-    uid: string | null;
-    email: string | null;
-    displayName: string | null;
-    photoURL: string | null;
-}
-
 export interface twitterInfoProps {
     uid: string;
     charname: string;
     imageUrl: string;
     nickname: string;
+    credit: number;
+    leftMsg: number;
 }
 
 export const userState = atom<User | null>({
@@ -31,6 +26,11 @@ export const initState = atom<boolean>({
 export const authState = atom<boolean>({
     key: "authState",
     default: !!auth?.currentUser,
+});
+
+export const myInfoState = atom<twitterInfoProps | null>({
+    key: "myInfoState",
+    default: null,
 });
 
 export const twiterInfoState = atom<twitterInfoProps[]>({
