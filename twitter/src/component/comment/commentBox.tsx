@@ -8,6 +8,8 @@ import { db } from "@/firebaseApp";
 import { toast } from "react-toastify";
 import { CommentBoxStyle } from "./commentStyle";
 import { useQueryClient } from "react-query";
+import { MdOutlineSubdirectoryArrowRight } from "react-icons/md";
+import { borderColor } from "@/GlobalStyle";
 
 export interface CommentProps {
     id: string;
@@ -49,6 +51,12 @@ export function CommentBox({ comment, post }: CommentBoxProps) {
 
     return (
         <CommentBoxStyle>
+            <div className="commentMark">
+                <MdOutlineSubdirectoryArrowRight
+                    size={16}
+                    color={`${borderColor}`}
+                />
+            </div>
             <div className="profile">
                 <div className="postFlex">
                     {comment?.profileUrl ? (

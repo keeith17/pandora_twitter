@@ -70,8 +70,14 @@ export const CommentFormStyle = styled.form`
 
 export const CommentBoxStyle = styled.div`
     width: 100%;
-    padding: 10px 0;
+    padding: 10px 0 10px 25px;
     border-bottom: 1px solid ${borderColor};
+    position: relative;
+    .commentMark {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
     .profile {
         padding: 0 10px;
         .postFlex {
