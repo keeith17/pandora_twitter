@@ -168,18 +168,18 @@ export default function ChatRoomPage() {
         : undefined;
 
     //uid를 닉네임으로
-    const uidToName = (uid: string) => {
-        if (memberList) {
-            for (const member of memberList) {
-                if (member.uid === uid) {
-                    return member.nickname;
-                }
-            }
-            return "none";
-        } else {
-            return "none";
-        }
-    };
+    // const uidToName = (uid: string) => {
+    //     if (memberList) {
+    //         for (const member of memberList) {
+    //             if (member.uid === uid) {
+    //                 return member.nickname;
+    //             }
+    //         }
+    //         return "none";
+    //     } else {
+    //         return "none";
+    //     }
+    // };
     //메시지 보내기
     const sendChat = useMutation(async () => {
         if (params.id) {
@@ -258,7 +258,7 @@ export default function ChatRoomPage() {
                     <button type="button" onClick={() => navigate("/message")}>
                         <IoIosArrowBack className="backButton" size={20} />
                     </button>
-                    <div>{partner && uidToName(partner)}</div>
+                    {/* <div>{partner && uidToName(partner)}</div> */}
                 </div>
             </TopTitle>
             <div ref={scrollRef} className="messages">
@@ -290,19 +290,12 @@ export default function ChatRoomPage() {
                                         {page?.data
                                             .slice(0)
                                             .reverse()
-                                            .map((message, index) => {
-                                                const isSamePrev = false;
-                                                // setPrevSender(message.sendId);
-                                                return (
-                                                    <ChatBox
-                                                        key={index}
-                                                        message={message}
-                                                        isprofilePhoto={
-                                                            isSamePrev
-                                                        }
-                                                    />
-                                                );
-                                            })}
+                                            .map((message, index) => (
+                                                <ChatBox
+                                                    key={index}
+                                                    message={message}
+                                                />
+                                            ))}
                                     </React.Fragment>
                                 ))}
                         </>
