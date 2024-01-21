@@ -38,8 +38,6 @@ export const GlobalStyle = css`
         font-family: "nexonGothic", "Giants-Inline";
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        overflow-x: overlay;
-        overflow-y: overlay;
         background: #1e293b;
         color: #ffffff;
         -webkit-user-select: none;

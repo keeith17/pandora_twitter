@@ -16,11 +16,11 @@ const FooterStyle = styled.div`
     bottom: 0;
     z-index: 5;
     width: 100%;
-    max-width: 598px;
+    max-width: 600px;
     margin: 0 auto;
     background: transparent;
     .grid {
-        width: 100%;
+        width: calc(100% - 2px);
         display: grid;
         grid-template-columns: repeat(5, minmax(0, 1fr));
         background: transparent;
