@@ -56,7 +56,7 @@ export default function MessagePage() {
         }
     };
 
-    const { data: MyInfo } = useQuery("myInfo", FetchMyInfo, {
+    useQuery("myInfo", FetchMyInfo, {
         staleTime: 60000,
     });
 

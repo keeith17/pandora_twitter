@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "@/atom";
 import { db, storage } from "@/firebaseApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { updatePhoneNumber, updateProfile } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
 import { useMutation } from "react-query";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";

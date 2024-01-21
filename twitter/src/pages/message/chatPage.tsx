@@ -1,4 +1,4 @@
-import { twiterInfoState, userState } from "@/atom";
+import { userState } from "@/atom";
 import { ButtonStyle, NoTitle, TopTitle } from "@/component/Style";
 import { db } from "@/firebaseApp";
 import {
