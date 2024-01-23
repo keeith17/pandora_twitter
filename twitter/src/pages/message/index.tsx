@@ -1,4 +1,5 @@
 import {
+    chargeModalState,
     myInfoState,
     twiterInfoState,
     twitterInfoProps,
@@ -19,7 +20,7 @@ import {
 import { FaPlus } from "react-icons/fa6";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { MessageWrapStyle } from "./messageStyle";
 
 export interface ChatRoomsProps {
@@ -35,10 +36,10 @@ export default function MessagePage() {
     const navigate = useNavigate();
     const user = useRecoilValue(userState);
     const setTwitterInfo = useSetRecoilState(twiterInfoState);
-    const setMyinfo = useSetRecoilState(myInfoState);
+    const [myInfo, setMyInfo] = useRecoilState(myInfoState);
+    const setIsChargeModal = useSetRecoilState(chargeModalState);
 
     //내 트윗 정보 페치
-
     const FetchMyInfo = async () => {
         if (user) {
             try {
@@ -48,7 +49,9 @@ export default function MessagePage() {
                     ...postSnap?.data(),
                     uid: user.uid,
                 } as twitterInfoProps;
-                setMyinfo(data);
+                if (!myInfo) {
+                    setMyInfo(data);
+                }
                 return data;
             } catch (error) {
                 console.error("Error fetching posts:", error);
@@ -105,17 +108,33 @@ export default function MessagePage() {
         }
     );
 
+    //충전 모달 열기
+    const openChargeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setIsChargeModal(true);
+    };
+
     return (
         <MessageWrapStyle>
             <TopTitle>
                 <div className="title">
-                    <div className="text">Direct Message</div>
-                    <button
-                        type="button"
-                        onClick={() => navigate("/message/new")}
-                    >
-                        <FaPlus size={20} />
-                    </button>
+                    <div className="text">Messages</div>
+                    <div className="buttons">
+                        <div className="leftMsg">R: {myInfo?.leftMsg} 개</div>
+                        <button
+                            className="addMsgCount"
+                            onClick={openChargeModal}
+                        >
+                            충전
+                        </button>
+                        <button
+                            type="button"
+                            className="addNewMsg"
+                            onClick={() => navigate("/message/new")}
+                        >
+                            <FaPlus size={20} />
+                        </button>
+                    </div>
                 </div>
             </TopTitle>
             <div className="chatRoomList">

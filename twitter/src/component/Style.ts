@@ -37,14 +37,37 @@ export const TopTitle = styled.div`
         font-size: 20px;
         font-family: "Giants-Inline";
         display: flex;
+        justify-content: space-between;
         .text {
-            width: 100%;
+            // width: 60%;
         }
         button {
+            font-family: "nexonGothic";
             background: transparent;
             height: 28px;
             border: none;
             outline: none;
+        }
+        .buttons {
+            // width: 40%;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            font-family: "nexonGothic";
+            font-size: 13px;
+            .addMsgCount {
+                padding: 0 10px;
+                height: 25px;
+                border-radius: 7px;
+                background: ${borderColor};
+            }
+            .addNewMsg {
+                font-family: "nexonGothic";
+                background: transparent;
+                height: 28px;
+                border: none;
+                outline: none;
+            }
         }
     }
 `;

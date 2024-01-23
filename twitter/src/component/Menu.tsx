@@ -14,7 +14,7 @@ import { backgroundColor, borderColor } from "@/GlobalStyle";
 const FooterStyle = styled.div`
     position: fixed;
     bottom: 0;
-    z-index: 5;
+    z-index: 2;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;

@@ -1,4 +1,4 @@
-import { userState } from "@/atom";
+import { chargeModalState, myInfoState, userState } from "@/atom";
 import { ButtonStyle, NoTitle, TopTitle } from "@/component/Style";
 import { db } from "@/firebaseApp";
 import {
@@ -24,13 +24,14 @@ import {
     useQueryClient,
 } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ChatWrapStyle, SendTextStyle } from "./messageStyle";
 import { useEffect, useRef, useState } from "react";
 import { ChatRoomsProps } from "@/pages/message";
 import { ChatBox } from "@/component/message/chatBox";
 import React from "react";
 import Loader from "@/component/loader/Loader";
+import { FaPlus } from "react-icons/fa6";
 
 export interface MessageProps {
     content: string;
@@ -52,8 +53,9 @@ export default function ChatRoomPage() {
     const navigate = useNavigate();
     const scrollRef = useRef<HTMLDivElement>(null);
     const user = useRecoilValue(userState);
+    const [myInfo, setMyInfo] = useRecoilState(myInfoState);
+    const setIsChargeModal = useSetRecoilState(chargeModalState);
     const params = useParams();
-    // const memberList = useRecoilValue(twiterInfoState);
     const [content, setContent] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -167,69 +169,68 @@ export default function ChatRoomPage() {
           )[0]
         : undefined;
 
-    //uid를 닉네임으로
-    // const uidToName = (uid: string) => {
-    //     if (memberList) {
-    //         for (const member of memberList) {
-    //             if (member.uid === uid) {
-    //                 return member.nickname;
-    //             }
-    //         }
-    //         return "none";
-    //     } else {
-    //         return "none";
-    //     }
-    // };
     //메시지 보내기
     const sendChat = useMutation(async () => {
         if (params.id) {
-            try {
-                setIsSubmitting(true);
-                const postRef = doc(db, "chatRooms", params.id);
-                await updateDoc(postRef, {
-                    lastMessage: content,
-                    createdAt: new Date()?.toLocaleDateString("ko", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                        hour12: false,
-                    }),
-                    newMessage: chatRoomInfo?.newMessage
-                        ? chatRoomInfo?.newMessage + 1
-                        : 1,
-                    lastSender: user?.uid,
-                });
-                await queryClient.invalidateQueries([
-                    "chatRoomInfo",
-                    params.id,
-                ]);
-                await addDoc(collection(db, "messages"), {
-                    roomId: params.id,
-                    createdAt: new Date()?.toLocaleDateString("ko", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                        hour12: false,
-                    }),
-                    content: content,
-                    senderPhoto: user?.photoURL,
-                    prevSender: chatRoomInfo?.lastSender,
-                    sendId: user?.uid,
-                    isRead: false,
-                    participants: [user?.uid, partner],
-                });
-                setContent("");
-                await queryClient.invalidateQueries(["messages", params.id]);
-            } catch (error) {
-                console.log(error);
+            if (myInfo && myInfo.leftMsg > 0) {
+                try {
+                    setIsSubmitting(true);
+                    const postRef = doc(db, "chatRooms", params.id);
+                    await updateDoc(postRef, {
+                        lastMessage: content,
+                        createdAt: new Date()?.toLocaleDateString("ko", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            hour12: false,
+                        }),
+                        newMessage: chatRoomInfo?.newMessage
+                            ? chatRoomInfo?.newMessage + 1
+                            : 1,
+                        lastSender: user?.uid,
+                    });
+                    await queryClient.invalidateQueries([
+                        "chatRoomInfo",
+                        params.id,
+                    ]);
+                    await addDoc(collection(db, "messages"), {
+                        roomId: params.id,
+                        createdAt: new Date()?.toLocaleDateString("ko", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            hour12: false,
+                        }),
+                        content: content,
+                        senderPhoto: user?.photoURL,
+                        prevSender: chatRoomInfo?.lastSender,
+                        sendId: user?.uid,
+                        isRead: false,
+                        participants: [user?.uid, partner],
+                    });
+                    setContent("");
+                    await queryClient.invalidateQueries([
+                        "messages",
+                        params.id,
+                    ]);
+                    if (user) {
+                        const charRef = doc(db, "twiterInfo", user?.uid);
+                        await updateDoc(charRef, {
+                            leftMsg: myInfo?.leftMsg - 1,
+                        });
+                        setMyInfo({ ...myInfo, leftMsg: myInfo.leftMsg - 1 });
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+                setIsSubmitting(false);
             }
-            setIsSubmitting(false);
         }
     });
 
@@ -251,6 +252,11 @@ export default function ChatRoomPage() {
         }
     };
 
+    //충전 모달 열기
+    const openChargeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setIsChargeModal(true);
+    };
     return (
         <ChatWrapStyle>
             <TopTitle>
@@ -258,6 +264,22 @@ export default function ChatRoomPage() {
                     <button type="button" onClick={() => navigate("/message")}>
                         <IoIosArrowBack className="backButton" size={20} />
                     </button>
+                    <div className="buttons">
+                        <div className="leftMsg">R: {myInfo?.leftMsg} 개</div>
+                        <button
+                            className="addMsgCount"
+                            onClick={openChargeModal}
+                        >
+                            충전
+                        </button>
+                        <button
+                            type="button"
+                            className="addNewMsg"
+                            onClick={() => navigate("/message/new")}
+                        >
+                            <FaPlus size={20} />
+                        </button>
+                    </div>
                     {/* <div>{partner && uidToName(partner)}</div> */}
                 </div>
             </TopTitle>
