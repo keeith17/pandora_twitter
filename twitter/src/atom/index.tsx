@@ -40,5 +40,5 @@ export const twiterInfoState = atom<twitterInfoProps[]>({
 
 export const chargeModalState = atom<boolean>({
     key: "chargeModalState",
-    default: true,
+    default: false,
 });
