@@ -11,6 +11,7 @@ import { GlobalStyle } from "./GlobalStyle";
 
 function App() {
     const init = useRecoilValue(initState);
+    //test
     return (
         <>
             <Global styles={GlobalStyle} />
