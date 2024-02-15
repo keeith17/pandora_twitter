@@ -8,7 +8,10 @@ import {
     arrayUnion,
     collection,
     doc,
+    getDocs,
+    query,
     updateDoc,
+    where,
 } from "firebase/firestore";
 import { db } from "@/firebaseApp";
 import { toast } from "react-toastify";
@@ -19,6 +22,16 @@ export interface CommentFormProps {
     post: PostProps | null;
 }
 
+export interface NotiProps {
+    id: string;
+    content: string;
+    count: number;
+    createdAt: string;
+    isRead: boolean;
+    postId: string;
+    uid: string;
+    url: string;
+}
 export default function CommentForm({ post }: CommentFormProps) {
     const queryClient = useQueryClient();
     const user = useRecoilValue(userState);
@@ -75,23 +88,47 @@ export default function CommentForm({ post }: CommentFormProps) {
                 //댓글 생성 알림 데이터 추가
                 if (user?.uid !== post?.uid) {
                     //내 댓글이 아닐 경우에만
-                    await addDoc(collection(db, "notifications"), {
-                        createdAt: new Date()?.toLocaleDateString("ko", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            second: "2-digit",
-                            hour12: false,
-                        }),
-                        uid: post?.uid,
-                        isRead: false,
-                        url: `/posts/${post?.id}`,
-                        content: `"${truncate(
-                            post?.content
-                        )}" 글에 댓글이 작성되었습니다`,
-                    });
+                    const existRef = collection(db, "notifications");
+                    const existQuery = query(
+                        existRef,
+                        where("postId", "==", post?.id)
+                    );
+                    const existSnapshot = await getDocs(existQuery);
+                    const existData = existSnapshot.docs.map((doc) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    })) as NotiProps[];
+                    //NotiProps
+                    if (existData.length > 0) {
+                        const notiRef = doc(
+                            db,
+                            "notifications",
+                            existData[0].id
+                        );
+                        await updateDoc(notiRef, {
+                            count: existData[0]?.count + 1,
+                        });
+                    } else {
+                        await addDoc(collection(db, "notifications"), {
+                            createdAt: new Date()?.toLocaleDateString("ko", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                second: "2-digit",
+                                hour12: false,
+                            }),
+                            uid: post?.uid, //댓글이 달리고 있는 post 작성자의 uid
+                            isRead: false,
+                            count: 1,
+                            postId: `${post?.id}`, //댓글이 달리고 있는 post 자체의 uid
+                            url: `/posts/${post?.id}`,
+                            content: `"${truncate(
+                                post?.content
+                            )}" 글에 댓글이 작성되었습니다`,
+                        });
+                    }
                 }
                 await queryClient.invalidateQueries(["postData", post.id]);
                 setComment("");
