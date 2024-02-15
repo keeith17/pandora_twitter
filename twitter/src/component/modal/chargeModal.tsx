@@ -176,7 +176,16 @@ export function ChargeModal() {
                                 <span className="subInfo">충전 금액</span>
                             </p>
                             =
-                            <p className="result">
+                            <p
+                                className={
+                                    calcLeftCredit(
+                                        myInfo?.credit || 0,
+                                        selectQ
+                                    ) < 0
+                                        ? "result minus"
+                                        : "result"
+                                }
+                            >
                                 {calcLeftCredit(myInfo?.credit || 0, selectQ)}Q
                             </p>
                         </div>

@@ -11,11 +11,11 @@ export const ModalWrap = styled.div`
     z-index: 3;
     .modalContent {
         width: 90%;
-        height: 500px;
-        padding: 10px;
-        border: 3px solid ${backgroundColor};
+        height: 470px;
+        padding: 20px 30px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
         border-radius: 10px;
-        background: ${borderColor};
+        background: ${backgroundColor};
         .myInfo {
             width: 100%;
             height: 10%;
@@ -24,6 +24,7 @@ export const ModalWrap = styled.div`
             align-items: center;
             border-bottom: 2px solid ${backgroundColor};
             position: relative;
+            // background: rgba(255, 255, 255, 0.4);
             .infoQR {
                 font-size: 20px;
                 font-weight: 600;
@@ -79,7 +80,7 @@ export const ModalWrap = styled.div`
                             border: 2px solid rgba(255, 255, 255, 0.6);
                             border-radius: 50%;
                             &:checked {
-                                border: 7px solid ${backgroundColor};
+                                border: 7px solid rgba(255, 255, 255, 0.6);
                             }
                         }
                     }
@@ -116,6 +117,9 @@ export const ModalWrap = styled.div`
                     position: relative;
                     &.result {
                         font-weight: 600;
+                        &.minus {
+                            color: red;
+                        }
                     }
                     .subInfo {
                         position: absolute;
@@ -154,7 +158,7 @@ export const ModalWrap = styled.div`
                                 display: inline-block;
                                 color: ${backgroundColor};
                                 position: absolute;
-                                top: -2px;
+                                top: 0;
                                 left: 2px;
                             }
                         }
