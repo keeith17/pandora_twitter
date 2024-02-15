@@ -106,7 +106,17 @@ export default function CommentForm({ post }: CommentFormProps) {
                             existData[0].id
                         );
                         await updateDoc(notiRef, {
+                            createdAt: new Date()?.toLocaleDateString("ko", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                second: "2-digit",
+                                hour12: false,
+                            }),
                             count: existData[0]?.count + 1,
+                            isRead: false,
                         });
                     } else {
                         await addDoc(collection(db, "notifications"), {
