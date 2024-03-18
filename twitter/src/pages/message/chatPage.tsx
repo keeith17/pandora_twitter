@@ -13,7 +13,6 @@ import {
     query,
     startAfter,
     updateDoc,
-    where,
 } from "firebase/firestore";
 import { IoIosArrowBack, IoMdSend } from "react-icons/io";
 import {
