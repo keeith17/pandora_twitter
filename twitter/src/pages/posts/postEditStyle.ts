@@ -145,3 +145,11 @@ export const EditBoxStyle = styled.div`
         }
     }
 `;
+
+export const NothingStyle = styled.div`
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;

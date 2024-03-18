@@ -166,7 +166,14 @@ export default function NewMessagePage() {
                         lastSender: user?.uid,
                         // profileUrl: [user?.photoURL, `${uidToPhoto(sendTo)}`],
                     });
-                    await addDoc(collection(db, "messages"), {
+                    const roomId = docRef.id;
+                    const messagesCollectionRef = collection(
+                        db,
+                        "chatRooms",
+                        roomId,
+                        "messages"
+                    );
+                    await addDoc(messagesCollectionRef, {
                         roomId: docRef.id,
                         createdAt: new Date()?.toLocaleDateString("ko", {
                             year: "numeric",
@@ -183,6 +190,23 @@ export default function NewMessagePage() {
                         isRead: false,
                         participants: [user?.uid, sendTo],
                     });
+                    // await addDoc(collection(db, "messages"), {
+                    //     roomId: docRef.id,
+                    //     createdAt: new Date()?.toLocaleDateString("ko", {
+                    //         year: "numeric",
+                    //         month: "2-digit",
+                    //         day: "2-digit",
+                    //         hour: "2-digit",
+                    //         minute: "2-digit",
+                    //         second: "2-digit",
+                    //         hour12: false,
+                    //     }),
+                    //     content: content,
+                    //     senderPhoto: user?.photoURL,
+                    //     sendId: user?.uid,
+                    //     isRead: false,
+                    //     participants: [user?.uid, sendTo],
+                    // });
                     //메시지 차감
                     if (user) {
                         const charRef = doc(db, "twiterInfo", user?.uid);

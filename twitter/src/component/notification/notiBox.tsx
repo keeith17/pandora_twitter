@@ -27,11 +27,13 @@ export function NotiBox({ noti }: NotiBoxProps) {
             <div onClick={() => onClickNotification(noti?.url)}>
                 <div className="createdAt">
                     <div className="when">{noti?.createdAt}</div>
+                </div>
+                <div className="checkRead">
+                    <div className="content">{noti.content}</div>
                     {noti?.isRead === false && (
                         <div className="unread">{noti.count}</div>
                     )}
                 </div>
-                <div className="content">{noti.content}</div>
             </div>
         </NotiBoxWrap>
     );

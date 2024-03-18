@@ -71,35 +71,37 @@ export default function ChatRoomPage() {
         pageParam,
     }: {
         pageParam?: MessageProps;
-    }): Promise<FetchDataResponse> => {
+    }): Promise<FetchDataResponse | undefined> => {
         try {
-            const postRef = collection(db, "messages");
-            const postQuery = pageParam
-                ? query(
-                      postRef,
-                      where("roomId", "==", params.id),
-                      orderBy("createdAt", "desc"),
-                      startAfter(pageParam),
-                      limit(30)
-                  )
-                : query(
-                      postRef,
-                      where("roomId", "==", params.id),
-                      orderBy("createdAt", "desc"),
-                      limit(30)
-                  );
+            if (params.id) {
+                const roomKey = params.id;
+                const postRef = collection(
+                    db,
+                    "chatRooms",
+                    roomKey,
+                    "messages"
+                );
+                const postQuery = pageParam
+                    ? query(
+                          postRef,
+                          orderBy("createdAt", "desc"),
+                          startAfter(pageParam),
+                          limit(30)
+                      )
+                    : query(postRef, orderBy("createdAt", "desc"), limit(30));
 
-            const querySnapshot = await getDocs(postQuery);
-            const data = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            })) as MessageProps[];
-            return {
-                data,
-                cursor: querySnapshot.docs.length
-                    ? querySnapshot.docs[querySnapshot.docs.length - 1]
-                    : undefined,
-            };
+                const querySnapshot = await getDocs(postQuery);
+                const data = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                })) as MessageProps[];
+                return {
+                    data,
+                    cursor: querySnapshot.docs.length
+                        ? querySnapshot.docs[querySnapshot.docs.length - 1]
+                        : undefined,
+                };
+            }
         } catch (error) {
             console.log(error);
             throw new Error("Failed to fetch data");
@@ -196,7 +198,13 @@ export default function ChatRoomPage() {
                         "chatRoomInfo",
                         params.id,
                     ]);
-                    await addDoc(collection(db, "messages"), {
+                    const messagesCollectionRef = collection(
+                        db,
+                        "chatRooms",
+                        params.id,
+                        "messages"
+                    );
+                    await addDoc(messagesCollectionRef, {
                         roomId: params.id,
                         createdAt: new Date()?.toLocaleDateString("ko", {
                             year: "numeric",

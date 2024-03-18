@@ -19,6 +19,14 @@ export const NotiBoxWrap = styled.div`
             font-size: 12px;
             margin-bottom: 4px;
         }
+    }
+    .checkRead {
+        width: 100%;
+        display: flex;
+        position: relative;
+        .content {
+            width: 100%;
+        }
         .unread {
             width: 20px;
             height: 20px;
@@ -27,9 +35,9 @@ export const NotiBoxWrap = styled.div`
             align-items: center;
             background: ${activeColor};
             border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
         }
-    }
-    .content {
-        width: 100%;
     }
 `;

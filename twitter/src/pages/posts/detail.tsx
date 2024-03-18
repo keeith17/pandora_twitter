@@ -8,6 +8,7 @@ import { PostBox } from "@/component/post/PostBox";
 import { IoIosArrowBack } from "react-icons/io";
 import CommentForm from "@/component/comment/commentForm";
 import { CommentBox, CommentProps } from "@/component/comment/commentBox";
+import { NothingStyle } from "./postEditStyle";
 
 const FetchPost = async (paramsId: string | undefined) => {
     if (paramsId) {
@@ -38,7 +39,7 @@ export default function PostDetail() {
                     </button>
                 </div>
             </TopTitle>
-            {herepost && (
+            {herepost?.content ? (
                 <>
                     <PostBox post={herepost} />
                     <CommentForm post={herepost} />
@@ -54,6 +55,10 @@ export default function PostDetail() {
                                 />
                             ))}
                 </>
+            ) : (
+                <NothingStyle>
+                    해당하는 게시 글이 존재하지 않습니다.
+                </NothingStyle>
             )}
         </div>
     );
