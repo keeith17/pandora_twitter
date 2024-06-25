@@ -15,7 +15,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import Loader from "@/component/loader/Loader";
 
-const PROFILE_DEFAULT_URL = "/images/seederEdit.webp";
+const PROFILE_DEFAULT_URL = "/images/null.webp";
 export default function ProfileEditPage() {
     const navigate = useNavigate();
     const user = useRecoilValue(userState);

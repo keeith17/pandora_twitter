@@ -12,7 +12,7 @@ import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import Loader from "@/component/loader/Loader";
 
-export const PROFILE_DEFAULT_URL = "/images/seederEdit.webp";
+export const PROFILE_DEFAULT_URL = "/images/null.webp";
 
 export default function FirstPage() {
     const user = useRecoilValue(userState);
@@ -65,7 +65,7 @@ export default function FirstPage() {
         async () => {
             const key = `${user?.uid}/${uuidv4()}`;
             const storageRef = ref(storage, key);
-            let newImageUrl = null;
+            let newImageUrl = "/images/null.webp";
             if (imageUrl) {
                 const data = await uploadString(
                     storageRef,
