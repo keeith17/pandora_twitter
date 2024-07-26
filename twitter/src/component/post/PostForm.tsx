@@ -63,6 +63,9 @@ export default function PostForm() {
             if (tag === "share") queryClient.invalidateQueries("SharePosts");
             if (tag === "hotlink")
                 queryClient.invalidateQueries("FetchHotPosts");
+            if (tag === "notice")
+                queryClient.invalidateQueries("FetchNoticePosts");
+            queryClient.invalidateQueries("FetchMyPosts");
             setContent("");
             setImgUrl("");
             setTag("talk");
