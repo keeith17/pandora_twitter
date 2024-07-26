@@ -1,4 +1,4 @@
-import { activeColor, danger } from "@/GlobalStyle";
+import { activeColor } from "@/GlobalStyle";
 import styled from "@emotion/styled";
 
 export const NotiBoxWrap = styled.div`
