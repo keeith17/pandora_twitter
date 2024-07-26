@@ -109,7 +109,7 @@ export const PostBoxStyle = styled.div`
             display: block;
             font-weight: 500;
             padding: 16px 4px;
-            whitespace: "pre-line";
+            white-space: pre-wrap;
             .imgDiv {
                 padding: 10px;
             }

@@ -75,6 +75,7 @@ export function PostBox({ post }: PostBoxProps) {
             await queryClient.invalidateQueries("AllPosts");
         }
         queryClient.invalidateQueries("FetchLikePosts");
+        queryClient.invalidateQueries(["postData", post.id]);
     };
 
     return (
