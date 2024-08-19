@@ -80,11 +80,14 @@ export default function FirstPage() {
                 const twitRef = doc(db, "twiterInfo", user?.uid);
                 const charRef = doc(db, "character", user?.uid);
                 const charSnap = await getDoc(charRef);
+                console.log(charSnap?.data());
                 const charData = {
                     credit: charSnap?.data()?.credit,
                     uid: user.uid,
                 };
-                if (charData) {
+                if (charSnap.data()) {
+                    console.log(charData);
+                    console.log("캐릭터 있어요");
                     await setDoc(twitRef, {
                         charname: charname,
                         nickname: nickname,
@@ -93,6 +96,7 @@ export default function FirstPage() {
                         leftMsg: 30,
                     });
                 } else {
+                    console.log("캐릭터없어요");
                     await setDoc(twitRef, {
                         charname: charname,
                         nickname: nickname,

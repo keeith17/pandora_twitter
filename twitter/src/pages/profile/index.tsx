@@ -10,7 +10,7 @@ import { db } from "@/firebaseApp";
 import { PostProps } from "../home";
 import { useQuery } from "react-query";
 
-type TabType = "my" | "like";
+type TabType = "my" | "like" | "Q";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
@@ -116,6 +116,14 @@ export default function ProfilePage() {
                 >
                     좋아요
                 </div>
+                <div
+                    className={`profileTab ${activeTab === "Q" && "tabActive"}`}
+                    onClick={() => {
+                        setActiveTab("Q");
+                    }}
+                >
+                    Q 관리
+                </div>
             </ProfileTabs>
             {activeTab === "my" && (
                 <div className="post">
@@ -147,6 +155,7 @@ export default function ProfilePage() {
                     )}
                 </div>
             )}
+            {activeTab === "Q" && <div className="Q">Q탭</div>}
         </div>
     );
 }
