@@ -138,12 +138,15 @@ export default function MessagePage() {
                 </div>
             </TopTitle>
             <div className="chatRoomList">
-                {chatRoomList &&
+                {chatRoomList && chatRoomList.length > 0 ? (
                     chatRoomList.map(
                         (chatRoom: ChatRoomsProps, index: number) => (
                             <ChatRoomBox key={index} chatRoom={chatRoom} />
                         )
-                    )}
+                    )
+                ) : (
+                    <div className="noMsg">새로운 대화를 시작해 주세요</div>
+                )}
             </div>
         </MessageWrapStyle>
     );

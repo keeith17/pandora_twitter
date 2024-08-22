@@ -133,5 +133,12 @@ export const MessageWrapStyle = styled.div`
         width: 100%;
         height: calc(100% - 45px);
         overflow-y: scroll;
+        .noMsg {
+            width: 100%;
+            padding: 2vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
 `;
