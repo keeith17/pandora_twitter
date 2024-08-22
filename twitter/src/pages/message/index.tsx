@@ -79,7 +79,7 @@ export default function MessagePage() {
         return data;
     };
     useQuery<twitterInfoProps[]>("twiterInfo", FetchMemberList, {
-        staleTime: 1000 * 60 * 2,
+        staleTime: 1000 * 60 * 60,
         onSuccess: (memberList) => {
             setTwitterInfo(memberList);
         },

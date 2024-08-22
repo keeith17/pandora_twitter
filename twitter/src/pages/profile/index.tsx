@@ -9,6 +9,7 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "@/firebaseApp";
 import { PostProps } from "../home";
 import { useQuery } from "react-query";
+import { QPage } from "@/component/manageQ/QPage";
 
 type TabType = "my" | "like" | "Q";
 
@@ -155,7 +156,7 @@ export default function ProfilePage() {
                     )}
                 </div>
             )}
-            {activeTab === "Q" && <div className="Q">Q탭</div>}
+            {activeTab === "Q" && <QPage />}
         </div>
     );
 }
