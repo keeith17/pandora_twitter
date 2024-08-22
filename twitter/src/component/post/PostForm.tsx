@@ -105,7 +105,7 @@ export default function PostForm() {
                         value={tag}
                         onChange={handleChange}
                     >
-                        {user?.uid === "FYDRcBpPxnbDiPrb9cK7CGL6Man2" && (
+                        {user?.uid === "u0UydTfRHnNPFjydNSHS1xqcScI2" && (
                             <option value="notice">공지</option>
                         )}
                         <option value="talk">사담</option>
