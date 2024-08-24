@@ -1,21 +1,25 @@
 import { twiterInfoState, twitterInfoProps, userState } from "@/atom";
 import { db } from "@/firebaseApp";
 import {
+    addDoc,
     collection,
     doc,
     getDoc,
     getDocs,
     orderBy,
     query,
+    serverTimestamp,
     Timestamp,
+    updateDoc,
     where,
 } from "firebase/firestore";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { LogList, QStyle } from "./QStyle";
+import { LogBoxStyle, QStyle } from "./QStyle";
 import { IoIosClose } from "react-icons/io";
 import { useState } from "react";
 import { ButtonStyle, InputStyle } from "../Style";
+import { toast } from "react-toastify";
 
 export interface QLogProps {
     id: string;
@@ -30,9 +34,13 @@ export interface QProps {
 }
 export function QPage() {
     const user = useRecoilValue(userState);
+    const queryClient = useQueryClient();
     const [twitterInfo, setTwitterInfo] = useRecoilState(twiterInfoState);
     const [sendTo, setSendTo] = useState<string>("");
     const [searchWord, setSearchWord] = useState<string>("");
+    const [sendCredit, setSendCredit] = useState<number>(0);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const onChange = (
         e:
             | React.ChangeEvent<HTMLInputElement>
@@ -43,6 +51,9 @@ export function QPage() {
         } = e;
         if (name === "searchWord") {
             setSearchWord(value);
+        }
+        if (name === "sendCredit") {
+            setSendCredit(Number(value));
         }
     };
     //보낼 사람 등록
@@ -135,9 +146,70 @@ export function QPage() {
     const { data: Qlog } = useQuery("Qlog", fetchQLog, {
         staleTime: 20000,
     });
+
+    //제출
+    const moneySend = useMutation(async () => {
+        if (user?.uid && QInfo) {
+            try {
+                setIsSubmitting(true);
+
+                //상대 돈 얼마나 있는진 알아야 함
+                const QInfoYou = doc(db, "money", sendTo);
+                const QSnapshot = await getDoc(QInfoYou);
+                const data = {
+                    ...QSnapshot?.data(),
+                } as QProps;
+                const myMoneyRef = doc(db, "money", user.uid);
+                const yourMoneyRef = doc(db, "money", sendTo);
+                const moneyLogRef = collection(db, "money", user.uid, "log");
+                const yourMoneyLogRef = collection(db, "money", sendTo, "log");
+
+                await updateDoc(myMoneyRef, {
+                    credit: QInfo.credit - sendCredit,
+                });
+                await addDoc(moneyLogRef, {
+                    log: `${uidToName(
+                        sendTo
+                    )}에게 ${sendCredit}Q 전송했습니다.`,
+                    timeStamp: serverTimestamp(),
+                });
+
+                await updateDoc(yourMoneyRef, {
+                    credit: data.credit + sendCredit,
+                });
+                await addDoc(yourMoneyLogRef, {
+                    log: `${QInfo.name}에게 ${sendCredit}Q 받았습니다.`,
+                    timeStamp: serverTimestamp(),
+                });
+                setSendTo("");
+                setSearchWord("");
+                setSendCredit(0);
+                toast.success(
+                    `${uidToName(sendTo)}에게 ${sendCredit}Q 전송했습니다.`
+                );
+            } catch (error) {
+                console.log(error);
+            }
+            await queryClient.invalidateQueries("QInfo");
+            await queryClient.invalidateQueries("Qlog");
+            setIsSubmitting(false);
+        }
+    });
+
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(!isNaN(sendCredit));
+        if (isNaN(sendCredit)) {
+            toast("송금 금액에는 숫자만 작성해 주세요");
+        } else if (!sendTo) {
+            toast("전송 대상을 선택해 주세요");
+        } else {
+            moneySend.mutate();
+        }
+    };
     return (
         <QStyle>
-            <form>
+            <form onSubmit={onSubmit}>
                 <div className="myQ">
                     <div className="q">
                         {QInfo?.credit} Q<p>현재 소지</p>
@@ -199,18 +271,27 @@ export function QPage() {
                                 fontFamily={"nexonGothic"}
                                 height={"100%"}
                                 border={"none"}
+                                onChange={onChange}
+                                name="sendCredit"
+                                value={sendCredit}
                                 placeholder="송금할 금액"
                             />
                         </div>
                     </div>
                 </div>
                 <div className="buttonBox">
-                    <ButtonStyle fontSize={"16px"}>전송</ButtonStyle>
+                    <ButtonStyle fontSize={"16px"} disabled={isSubmitting}>
+                        전송
+                    </ButtonStyle>
                 </div>
             </form>
-            {Qlog?.map((log) => (
-                <LogList key={log.id}>{log.log}</LogList>
-            ))}
+            <LogBoxStyle>
+                {Qlog?.map((log) => (
+                    <div className="loglist" key={log.id}>
+                        {log.log}
+                    </div>
+                ))}
+            </LogBoxStyle>
         </QStyle>
     );
 }

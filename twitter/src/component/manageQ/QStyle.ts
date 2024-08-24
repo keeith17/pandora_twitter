@@ -117,8 +117,11 @@ export const QStyle = styled.div`
     }
 `;
 
-export const LogList = styled.div`
+export const LogBoxStyle = styled.div`
     width: 100%;
-    padding: 1vh;
-    border-top: 1px solid ${borderColor};
+    .loglist {
+        width: 100%;
+        padding: 1vh;
+        border-top: 1px solid ${borderColor};
+    }
 `;
