@@ -78,34 +78,13 @@ export default function FirstPage() {
             }
             if (user) {
                 const twitRef = doc(db, "twiterInfo", user?.uid);
-                const charRef = doc(db, "character", user?.uid);
-                const charSnap = await getDoc(charRef);
-                console.log(charSnap?.data());
-                const charData = {
-                    credit: charSnap?.data()?.credit,
-                    uid: user.uid,
-                };
-                if (charSnap.data()) {
-                    console.log(charData);
-                    console.log("캐릭터 있어요");
-                    await setDoc(twitRef, {
-                        charname: charname,
-                        nickname: nickname,
-                        imageUrl: newImageUrl,
-                        credit: charData.credit,
-                        leftMsg: 30,
-                    });
-                } else {
-                    console.log("캐릭터없어요");
-                    await setDoc(twitRef, {
-                        charname: charname,
-                        nickname: nickname,
-                        imageUrl: newImageUrl,
-                        credit: 0,
-                        leftMsg: 30,
-                    });
-                }
-
+                await setDoc(twitRef, {
+                    charname: charname,
+                    nickname: nickname,
+                    imageUrl: newImageUrl,
+                    credit: 0,
+                    leftMsg: 30,
+                });
                 await updateProfile(user, {
                     displayName: nickname || null,
                     photoURL: newImageUrl || null,
