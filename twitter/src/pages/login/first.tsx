@@ -8,7 +8,7 @@ import { db, storage } from "@/firebaseApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import { useMutation } from "react-query";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import Loader from "@/component/loader/Loader";
 
