@@ -3,37 +3,70 @@ import { ModalWrap } from "./modalStyle";
 import { IoCloseOutline } from "react-icons/io5";
 import { chargeModalState, myInfoState, userState } from "@/atom";
 import { useState } from "react";
-import { useMutation } from "react-query";
-import { doc, updateDoc } from "firebase/firestore";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+    addDoc,
+    collection,
+    doc,
+    getDoc,
+    serverTimestamp,
+    updateDoc,
+} from "firebase/firestore";
 import { db } from "@/firebaseApp";
 import Loader from "../loader/Loader";
 import { ButtonStyle2 } from "../Style";
+import { QProps } from "../manageQ/QPage";
 
 export function ChargeModal() {
     const user = useRecoilValue(userState);
+    const queryClient = useQueryClient();
     const [myInfo, setMyInfo] = useRecoilState(myInfoState);
     const setIsChargeModal = useSetRecoilState(chargeModalState);
     const [selectR, setSelectR] = useState<number>(0);
     const [selectQ, setSelectQ] = useState<number>(0);
     const [confirm, setConfirm] = useState<boolean>(false);
 
+    //현재 Q fetch
+    const fetchQ = async () => {
+        if (user?.uid) {
+            try {
+                const Qref = doc(db, "money", user.uid);
+                const QSnapshot = await getDoc(Qref);
+                const data = {
+                    ...QSnapshot?.data(),
+                } as QProps;
+                return data;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+    const { data: QInfo } = useQuery("QInfo", fetchQ, {
+        staleTime: 20000,
+    });
+
     //결제 (알차감, 문자충전)
     const { mutate: chargeR, isLoading } = useMutation(async () => {
-        if (user && myInfo) {
+        if (user && myInfo && QInfo) {
             const twitRef = doc(db, "twiterInfo", user?.uid);
-            const charRef = doc(db, "character", user?.uid);
+            const moneyRef = doc(db, "money", user?.uid);
+            const moneyLogRef = collection(db, "money", user?.uid, "log");
             await updateDoc(twitRef, {
                 leftMsg: myInfo?.leftMsg + selectR,
-                credit: myInfo?.credit - selectQ,
             });
-            await updateDoc(charRef, {
-                credit: myInfo?.credit - selectQ,
+            await updateDoc(moneyRef, {
+                credit: QInfo?.credit - selectQ,
+            });
+            await addDoc(moneyLogRef, {
+                log: `R 구매로 ${selectQ}Q 차감되었습니다.`,
+                timeStamp: serverTimestamp(),
             });
             setMyInfo({
                 ...myInfo,
                 leftMsg: myInfo?.leftMsg + selectR,
-                credit: myInfo?.credit - selectQ,
+                credit: QInfo?.credit - selectQ,
             });
+            await queryClient.invalidateQueries("QInfo");
         }
         setIsChargeModal(false);
     });
@@ -96,7 +129,7 @@ export function ChargeModal() {
                 <div className="modalContent">
                     <div className="myInfo">
                         <div className="infoQR">
-                            Q: {myInfo?.credit} R: {myInfo?.leftMsg}
+                            Q: {QInfo?.credit} R: {myInfo?.leftMsg}
                         </div>
                         <ButtonStyle2 onClick={handleModalClose}>
                             <IoCloseOutline size={30} />
@@ -167,7 +200,7 @@ export function ChargeModal() {
                     <div className="calc">
                         <div className="priceInfo">
                             <p>
-                                {myInfo?.credit}Q{" "}
+                                {QInfo?.credit}Q{" "}
                                 <span className="subInfo">현재 소지 금액</span>
                             </p>
                             -
@@ -179,14 +212,14 @@ export function ChargeModal() {
                             <p
                                 className={
                                     calcLeftCredit(
-                                        myInfo?.credit || 0,
+                                        QInfo?.credit || 0,
                                         selectQ
                                     ) < 0
                                         ? "result minus"
                                         : "result"
                                 }
                             >
-                                {calcLeftCredit(myInfo?.credit || 0, selectQ)}Q
+                                {calcLeftCredit(QInfo?.credit || 0, selectQ)}Q
                             </p>
                         </div>
                     </div>
@@ -204,7 +237,7 @@ export function ChargeModal() {
                         </div>
                         <ButtonStyle2
                             disabled={
-                                calcLeftCredit(myInfo?.credit || 0, selectQ) <
+                                calcLeftCredit(QInfo?.credit || 0, selectQ) <
                                     0 || !confirm
                             }
                             onClick={handleSubmit}
