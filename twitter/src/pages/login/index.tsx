@@ -53,7 +53,7 @@ export default function LoginPage() {
                     onChange={onChange}
                 />
                 <InputStyle
-                    type="text"
+                    type="password"
                     id="password"
                     name="password"
                     className="loginInfo"
