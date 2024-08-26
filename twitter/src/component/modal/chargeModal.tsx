@@ -67,6 +67,7 @@ export function ChargeModal() {
                 credit: QInfo?.credit - selectQ,
             });
             await queryClient.invalidateQueries("QInfo");
+            await queryClient.invalidateQueries("Qlog");
         }
         setIsChargeModal(false);
     });
