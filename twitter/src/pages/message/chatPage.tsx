@@ -1,4 +1,9 @@
-import { chargeModalState, myInfoState, userState } from "@/atom";
+import {
+    chargeModalState,
+    myInfoState,
+    twitterInfoProps,
+    userState,
+} from "@/atom";
 import { ButtonStyle, NoTitle, TopTitle } from "@/component/Style";
 import { db } from "@/firebaseApp";
 import {
@@ -118,6 +123,7 @@ export default function ChatRoomPage() {
             getNextPageParam: (lastPage) => lastPage?.cursor,
         }
     );
+
     // no 무한 버전
     // const FetchMessage = async () => {
     //     if (params.id) {
@@ -163,6 +169,29 @@ export default function ChatRoomPage() {
         ["chatRoomInfo", params.id],
         FetchRoomInfo
     );
+
+    const FetchMyInfo = async () => {
+        if (user) {
+            try {
+                const docRef = doc(db, "twiterInfo", user?.uid);
+                const postSnap = await getDoc(docRef);
+                const data = {
+                    ...postSnap?.data(),
+                    uid: user.uid,
+                } as twitterInfoProps;
+                if (!myInfo) {
+                    setMyInfo(data);
+                }
+                return data;
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
+        }
+    };
+
+    useQuery("myInfo", FetchMyInfo, {
+        staleTime: 60000,
+    });
     //상대방 uid
     const partner = messages
         ? messages.pages[0].data[0].participants.filter(
