@@ -134,7 +134,6 @@ export function PostBox({ post }: PostBoxProps) {
                                     src={post?.imgUrl}
                                     alt="postImg"
                                     className="postImg"
-                                    width={100}
                                 />
                             </div>
                         )}
