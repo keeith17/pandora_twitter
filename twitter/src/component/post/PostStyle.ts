@@ -73,6 +73,7 @@ export const PostBoxStyle = styled.div`
     padding: 10px 0;
     border-bottom: 1px solid ${borderColor};
     .profile {
+        width: 100%;
         padding: 0 10px;
         .postFlex {
             display: flex;
@@ -105,13 +106,18 @@ export const PostBoxStyle = styled.div`
             }
         }
         .postContent {
+            width: 100%;
             color: #fff;
             display: block;
             font-weight: 500;
             padding: 16px 4px;
             white-space: pre-wrap;
-            .imgDiv {
-                padding: 10px;
+        }
+        .imgDiv {
+            width: 100%;
+            padding: 0 1vw;
+            .postImg {
+                width: 100%;
             }
         }
     }
