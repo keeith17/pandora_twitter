@@ -112,24 +112,32 @@ export default function NewMessagePage() {
                     })) as ChatRoomsProps[];
                 //대화중인 대화방이 이미 있었을 경우
                 if (chatRoomData.length > 0) {
-                    await addDoc(collection(db, "messages"), {
-                        roomId: chatRoomData[0].uid,
-                        createdAt: new Date()?.toLocaleDateString("ko", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            second: "2-digit",
-                            hour12: false,
-                        }),
-                        content: content,
-                        senderPhoto: user?.photoURL,
-                        prevSender: chatRoomData[0]?.lastSender,
-                        sendId: user?.uid,
-                        isRead: false,
-                        participants: [user?.uid, sendTo],
-                    });
+                    await addDoc(
+                        collection(
+                            db,
+                            "chatRooms",
+                            chatRoomData[0].uid,
+                            "messages"
+                        ),
+                        {
+                            roomId: chatRoomData[0].uid,
+                            createdAt: new Date()?.toLocaleDateString("ko", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                second: "2-digit",
+                                hour12: false,
+                            }),
+                            content: content,
+                            senderPhoto: user?.photoURL,
+                            prevSender: chatRoomData[0]?.lastSender,
+                            sendId: user?.uid,
+                            isRead: false,
+                            participants: [user?.uid, sendTo],
+                        }
+                    );
                     //메시지 차감
                     if (user) {
                         const charRef = doc(db, "twiterInfo", user?.uid);

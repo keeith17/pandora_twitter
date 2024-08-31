@@ -36,6 +36,7 @@ import { ChatBox } from "@/component/message/chatBox";
 import React from "react";
 import Loader from "@/component/loader/Loader";
 import { FaPlus } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 export interface MessageProps {
     content: string;
@@ -205,6 +206,7 @@ export default function ChatRoomPage() {
             if (myInfo && myInfo.leftMsg > 0) {
                 try {
                     setIsSubmitting(true);
+                    // 채팅방 정보 업데이트
                     const postRef = doc(db, "chatRooms", params.id);
                     await updateDoc(postRef, {
                         lastMessage: content,
@@ -226,6 +228,7 @@ export default function ChatRoomPage() {
                         "chatRoomInfo",
                         params.id,
                     ]);
+                    //메시지 등록
                     const messagesCollectionRef = collection(
                         db,
                         "chatRooms",
@@ -266,6 +269,8 @@ export default function ChatRoomPage() {
                     console.log(error);
                 }
                 setIsSubmitting(false);
+            } else {
+                toast.warn("남은 R이 부족합니다!");
             }
         }
     });
