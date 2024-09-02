@@ -122,9 +122,13 @@ export const CommentBoxStyle = styled.div`
             display: block;
             font-weight: 500;
             padding: 16px 4px;
-            whitespace: "pre-line";
-            .imgDiv {
-                padding: 10px;
+            white-space: pre-wrap;
+        }
+        .imgDiv {
+            width: 100%;
+            padding: 0 1vw;
+            .postImg {
+                width: 100%;
             }
         }
     }
