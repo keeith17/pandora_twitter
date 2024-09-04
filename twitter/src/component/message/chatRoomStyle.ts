@@ -16,6 +16,8 @@ export const ChatRoomWrap = styled.div`
         img {
             width: 100%;
             border-radius: 50%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
         }
     }
     .chatInfo {
