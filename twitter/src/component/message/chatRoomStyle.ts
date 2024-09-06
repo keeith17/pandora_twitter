@@ -80,6 +80,8 @@ export const MessageBoxStyle = styled.div`
         img {
             max-width: 100%;
             border-radius: 50%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
         }
     }
     .balloon {
