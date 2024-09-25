@@ -97,9 +97,7 @@ export default function MotorballPage() {
             console.log(error);
         }
     };
-    const { data: stockData } = useQuery("stockData", fetchStockValue, {
-        staleTime: 20000,
-    });
+    const { data: stockData } = useQuery("stockData", fetchStockValue);
     const fetchPrizeValue = async () => {
         if (user?.uid && stockData) {
             try {
@@ -156,7 +154,6 @@ export default function MotorballPage() {
         }
     };
     const { data: prizeData } = useQuery("prizeData", fetchPrizeValue, {
-        staleTime: 20000,
         enabled: !!stockData,
     });
     const beforePrizeValue = async () => {
@@ -217,7 +214,6 @@ export default function MotorballPage() {
         "beforePrizeData",
         beforePrizeValue,
         {
-            staleTime: 20000,
             enabled: !!stockData,
         }
     );
@@ -281,7 +277,6 @@ export default function MotorballPage() {
         "beforePrizeData2",
         beforePrizeValue2,
         {
-            staleTime: 20000,
             enabled: !!stockData,
         }
     );
