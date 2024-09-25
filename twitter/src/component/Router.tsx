@@ -12,6 +12,7 @@ import MessagePage from "@/pages/message";
 import FirstPage from "@/pages/login/first";
 import NewMessagePage from "@/pages/message/new";
 import ChatRoomPage from "@/pages/message/chatPage";
+import MotorballPage from "@/pages/motorball";
 
 export default function Router() {
     const auth = useRecoilValue(authState);
@@ -47,6 +48,7 @@ export default function Router() {
                             path="/notifications"
                             element={<NotificationsPage />}
                         />
+                        <Route path="/motorball" element={<MotorballPage />} />
                         <Route path="*" element={<Navigate replace to="/" />} />
                     </>
                 )
