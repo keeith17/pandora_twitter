@@ -33,12 +33,13 @@ export interface StockProps {
     timestamp: Timestamp;
 }
 export interface PrizeProps {
-    [key: string]: number | string[]; // 문자열 인덱스 추가
+    [key: string]: number | string[] | boolean; // 문자열 인덱스 추가
     ship1: number;
     ship2: number;
     ship3: number;
     ship4: number;
     ship5: number;
+    get: boolean;
     win: string[] | []; // win을 문자열 배열로 설정
 }
 export default function MotorballPage() {
@@ -123,6 +124,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: winSnapshot.data().value,
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -139,6 +141,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: [],
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -179,6 +182,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: winSnapshot.data().value,
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -195,6 +199,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: [],
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -241,6 +246,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: winSnapshot.data().value,
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -257,6 +263,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: [],
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
