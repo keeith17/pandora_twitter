@@ -194,6 +194,9 @@ export const PrizeRecordWrap = styled.div`
             background: white;
             color: black;
             border-radius: 20px;
+            &:disabled {
+                background: gray;
+            }
         }
     }
 `;

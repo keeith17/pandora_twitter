@@ -307,6 +307,7 @@ export default function MotorballPage() {
                 setIsSubmitting(true);
                 const myMoneyRef = doc(db, "money", user.uid);
                 const moneyLogRef = collection(db, "money", user.uid, "log");
+
                 const motorballRef = doc(
                     db,
                     "prize",
@@ -370,6 +371,7 @@ export default function MotorballPage() {
             await queryClient.invalidateQueries("stockData");
             await queryClient.invalidateQueries("prizeData");
             await queryClient.invalidateQueries("beforePrizeData");
+            await queryClient.invalidateQueries("beforePrizeData2");
             setIsSubmitting(false);
         }
     });
@@ -379,6 +381,103 @@ export default function MotorballPage() {
         makePurchase.mutate();
     };
 
+    //이전회차 수령하기 귀찬아서 미친다 진짜
+    const getPrizeFunction = useMutation(async () => {
+        if (user?.uid && QInfo && stockData && beforePrizeData) {
+            try {
+                setIsSubmitting(true);
+                const myMoneyRef = doc(db, "money", user.uid);
+                const moneyLogRef = collection(db, "money", user.uid, "log");
+                const getMoney = getCalc(beforePrizeData);
+
+                const motorballRef = doc(
+                    db,
+                    "prize",
+                    `open${stockData.open - 1}`,
+                    "players",
+                    user.uid
+                );
+
+                await updateDoc(myMoneyRef, {
+                    credit: QInfo.credit + getMoney,
+                });
+                await addDoc(moneyLogRef, {
+                    log: `모터볼 상금으로 ${getMoney}Q 수령했습니다.`,
+                    timeStamp: serverTimestamp(),
+                });
+
+                await updateDoc(motorballRef, {
+                    get: true,
+                });
+
+                toast.success(`성공적으로 수령하였습니다.`);
+            } catch (error) {
+                console.log(error);
+            }
+            await queryClient.invalidateQueries("QInfo");
+            await queryClient.invalidateQueries("Qlog");
+            await queryClient.invalidateQueries("stockData");
+            await queryClient.invalidateQueries("prizeData");
+            await queryClient.invalidateQueries("beforePrizeData");
+            await queryClient.invalidateQueries("beforePrizeData2");
+            setIsSubmitting(false);
+        }
+    });
+
+    const getPrize = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        getPrizeFunction.mutate();
+    };
+
+    //이전이전 회차 수령하기
+    const getPrizeFunction2 = useMutation(async () => {
+        if (user?.uid && QInfo && stockData && beforePrizeData2) {
+            try {
+                setIsSubmitting(true);
+                const myMoneyRef = doc(db, "money", user.uid);
+                const moneyLogRef = collection(db, "money", user.uid, "log");
+                const getMoney = getCalc(beforePrizeData2);
+
+                const motorballRef = doc(
+                    db,
+                    "prize",
+                    `open${stockData.open - 2}`,
+                    "players",
+                    user.uid
+                );
+
+                await updateDoc(myMoneyRef, {
+                    credit: QInfo.credit + getMoney,
+                });
+                await addDoc(moneyLogRef, {
+                    log: `모터볼 상금으로 ${getMoney}Q 수령했습니다.`,
+                    timeStamp: serverTimestamp(),
+                });
+
+                await updateDoc(motorballRef, {
+                    get: true,
+                });
+
+                toast.success(`성공적으로 수령하였습니다.`);
+            } catch (error) {
+                console.log(error);
+            }
+            await queryClient.invalidateQueries("QInfo");
+            await queryClient.invalidateQueries("Qlog");
+            await queryClient.invalidateQueries("stockData");
+            await queryClient.invalidateQueries("prizeData");
+            await queryClient.invalidateQueries("beforePrizeData");
+            await queryClient.invalidateQueries("beforePrizeData2");
+            setIsSubmitting(false);
+        }
+    });
+
+    const getPrize2 = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        getPrizeFunction2.mutate();
+    };
+
+    //수령 상금 계산
     const getCalc = (prizeData: PrizeProps) => {
         let total = 0;
         // prizeData.win의 각 항목을 순회
@@ -570,7 +669,11 @@ export default function MotorballPage() {
                             </div>
                             <div className="calc">
                                 상금: {getCalc(beforePrizeData)}
-                                {!beforePrizeData.get && <button>수령</button>}
+                                {!beforePrizeData.get ? (
+                                    <button onClick={getPrize}>수령</button>
+                                ) : (
+                                    <button disabled>수령 완료</button>
+                                )}
                             </div>
                         </>
                     )}
@@ -599,7 +702,11 @@ export default function MotorballPage() {
                             </div>
                             <div className="calc">
                                 상금: {getCalc(beforePrizeData2)}
-                                {!beforePrizeData2.get && <button>수령</button>}
+                                {!beforePrizeData2.get ? (
+                                    <button onClick={getPrize2}>수령</button>
+                                ) : (
+                                    <button disabled>수령 완료</button>
+                                )}
                             </div>
                         </>
                     )}
