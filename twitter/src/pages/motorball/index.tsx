@@ -650,6 +650,7 @@ export default function MotorballPage() {
                             type="number"
                             id="ship1"
                             name="ship1"
+                            min="10"
                             onChange={onChange}
                         />
                     </label>
@@ -660,6 +661,7 @@ export default function MotorballPage() {
                             type="number"
                             id="ship2"
                             name="ship2"
+                            min="10"
                             onChange={onChange}
                         />
                     </label>
@@ -670,6 +672,7 @@ export default function MotorballPage() {
                             type="number"
                             id="ship3"
                             name="ship3"
+                            min="10"
                             onChange={onChange}
                         />
                     </label>
@@ -680,6 +683,7 @@ export default function MotorballPage() {
                             type="number"
                             id="ship4"
                             name="ship4"
+                            min="10"
                             onChange={onChange}
                         />
                     </label>
@@ -690,6 +694,7 @@ export default function MotorballPage() {
                             type="number"
                             id="ship5"
                             name="ship5"
+                            min="10"
                             onChange={onChange}
                         />
                     </label>
