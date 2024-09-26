@@ -7,7 +7,7 @@ import { useRecoilValue } from "recoil";
 import { BsHouse } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { MdLogout, MdLogin, MdOutlineMessage } from "react-icons/md";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import { GiThunderball } from "react-icons/gi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { backgroundColor, borderColor } from "@/GlobalStyle";
 
@@ -101,17 +101,18 @@ export default function MenuList() {
                 <button
                     type="button"
                     className={
-                        location.pathname === "/notifications" ? "select" : ""
+                        location.pathname === "/motorball" ? "select" : ""
                     }
                     onClick={() => {
-                        navigate("/notifications");
-                        window.scrollTo({
-                            top: 0,
-                            behavior: "smooth",
-                        });
+                        return;
+                        // navigate("/motorball");
+                        // window.scrollTo({
+                        //     top: 0,
+                        //     behavior: "smooth",
+                        // });
                     }}
                 >
-                    <IoMdNotificationsOutline size={21} />
+                    <GiThunderball size={21} />
                 </button>
                 {user === null ? (
                     <button
