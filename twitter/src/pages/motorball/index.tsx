@@ -97,7 +97,16 @@ export default function MotorballPage() {
             console.log(error);
         }
     };
-    const { data: stockData } = useQuery("stockData", fetchStockValue);
+    const { data: stockData } = useQuery("stockData", fetchStockValue, {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries("prizeData");
+            await queryClient.invalidateQueries("beforePrizeData");
+            await queryClient.invalidateQueries("beforePrizeData2");
+            await queryClient.invalidateQueries("beforePrizeData3");
+        },
+    });
+
+    // 진행중 게임 현황
     const fetchPrizeValue = async () => {
         if (user?.uid && stockData) {
             try {
@@ -156,6 +165,8 @@ export default function MotorballPage() {
     const { data: prizeData } = useQuery("prizeData", fetchPrizeValue, {
         enabled: !!stockData,
     });
+
+    //1회 직전 게임 결과
     const beforePrizeValue = async () => {
         if (user?.uid && stockData) {
             try {
@@ -218,6 +229,7 @@ export default function MotorballPage() {
         }
     );
 
+    //2회 직전 게임 결과
     const beforePrizeValue2 = async () => {
         if (user?.uid && stockData) {
             try {
@@ -276,6 +288,70 @@ export default function MotorballPage() {
     const { data: beforePrizeData2 } = useQuery(
         "beforePrizeData2",
         beforePrizeValue2,
+        {
+            enabled: !!stockData,
+        }
+    );
+
+    //3회 직전 게임 결과
+    const beforePrizeValue3 = async () => {
+        if (user?.uid && stockData) {
+            try {
+                // stockValue 컬렉션의 참조 생성
+                const prizeRef = doc(
+                    db,
+                    "prize",
+                    `open${stockData.open - 3}`,
+                    "players",
+                    user.uid
+                );
+                const winRef = doc(db, "prize", `open${stockData.open - 3}`);
+                const prizeSnapshot = await getDoc(prizeRef);
+                const winSnapshot = await getDoc(winRef);
+
+                if (winSnapshot.exists()) {
+                    if (!prizeSnapshot.exists()) {
+                        return {
+                            ship1: 0,
+                            ship2: 0,
+                            ship3: 0,
+                            ship4: 0,
+                            ship5: 0,
+                            win: winSnapshot.data().value,
+                            get: true,
+                        } as PrizeProps;
+                    }
+                    const data = {
+                        ...prizeSnapshot?.data(),
+                        win: winSnapshot.data().value,
+                    } as PrizeProps;
+                    return data;
+                } else {
+                    if (!prizeSnapshot.exists()) {
+                        return {
+                            ship1: 0,
+                            ship2: 0,
+                            ship3: 0,
+                            ship4: 0,
+                            ship5: 0,
+                            win: [],
+                            get: true,
+                        } as PrizeProps;
+                    }
+                    const data = {
+                        ...prizeSnapshot?.data(),
+                        win: [],
+                    } as PrizeProps;
+                    return data;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+    const { data: beforePrizeData3 } = useQuery(
+        "beforePrizeData3",
+        beforePrizeValue3,
         {
             enabled: !!stockData,
         }
@@ -362,6 +438,7 @@ export default function MotorballPage() {
             await queryClient.invalidateQueries("prizeData");
             await queryClient.invalidateQueries("beforePrizeData");
             await queryClient.invalidateQueries("beforePrizeData2");
+            await queryClient.invalidateQueries("beforePrizeData3");
             setIsSubmitting(false);
         }
     });
@@ -410,6 +487,7 @@ export default function MotorballPage() {
             await queryClient.invalidateQueries("prizeData");
             await queryClient.invalidateQueries("beforePrizeData");
             await queryClient.invalidateQueries("beforePrizeData2");
+            await queryClient.invalidateQueries("beforePrizeData3");
             setIsSubmitting(false);
         }
     });
@@ -458,6 +536,7 @@ export default function MotorballPage() {
             await queryClient.invalidateQueries("prizeData");
             await queryClient.invalidateQueries("beforePrizeData");
             await queryClient.invalidateQueries("beforePrizeData2");
+            await queryClient.invalidateQueries("beforePrizeData3");
             setIsSubmitting(false);
         }
     });
@@ -465,6 +544,55 @@ export default function MotorballPage() {
     const getPrize2 = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         getPrizeFunction2.mutate();
+    };
+
+    //이전이전이전 회차 수령하기
+    const getPrizeFunction3 = useMutation(async () => {
+        if (user?.uid && QInfo && stockData && beforePrizeData3) {
+            try {
+                setIsSubmitting(true);
+                const myMoneyRef = doc(db, "money", user.uid);
+                const moneyLogRef = collection(db, "money", user.uid, "log");
+                const getMoney = getCalc(beforePrizeData3);
+
+                const motorballRef = doc(
+                    db,
+                    "prize",
+                    `open${stockData.open - 3}`,
+                    "players",
+                    user.uid
+                );
+
+                await updateDoc(myMoneyRef, {
+                    credit: QInfo.credit + getMoney,
+                });
+                await addDoc(moneyLogRef, {
+                    log: `모터볼 상금으로 ${getMoney}Q 수령했습니다.`,
+                    timeStamp: serverTimestamp(),
+                });
+
+                await updateDoc(motorballRef, {
+                    get: true,
+                });
+
+                toast.success(`성공적으로 수령하였습니다.`);
+            } catch (error) {
+                console.log(error);
+            }
+            await queryClient.invalidateQueries("QInfo");
+            await queryClient.invalidateQueries("Qlog");
+            await queryClient.invalidateQueries("stockData");
+            await queryClient.invalidateQueries("prizeData");
+            await queryClient.invalidateQueries("beforePrizeData");
+            await queryClient.invalidateQueries("beforePrizeData2");
+            await queryClient.invalidateQueries("beforePrizeData3");
+            setIsSubmitting(false);
+        }
+    });
+
+    const getPrize3 = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        getPrizeFunction3.mutate();
     };
 
     //수령 상금 계산
@@ -686,6 +814,39 @@ export default function MotorballPage() {
                                 상금: {getCalc(beforePrizeData2)}
                                 {!beforePrizeData2.get ? (
                                     <button onClick={getPrize2}>수령</button>
+                                ) : (
+                                    <button disabled>수령 완료</button>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </PrizeRecordWrap>
+                <PrizeRecordWrap>
+                    <p>{stockData.open - 3}회 기록</p>
+                    {beforePrizeData3 && (
+                        <>
+                            <div className="shipsRecord">
+                                {shipList.map((ship: string) => (
+                                    <div className={`ship ${ship}`} key={ship}>
+                                        <div className="color"></div>
+                                        <div className="much">
+                                            {beforePrizeData3[ship]}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="ship winShip">
+                                우승:{" "}
+                                {beforePrizeData3.win.map((ship) => (
+                                    <div className={`ship ${ship}`}>
+                                        <div className="color"></div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="calc">
+                                상금: {getCalc(beforePrizeData3)}
+                                {!beforePrizeData3.get ? (
+                                    <button onClick={getPrize3}>수령</button>
                                 ) : (
                                     <button disabled>수령 완료</button>
                                 )}
