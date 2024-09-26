@@ -33,12 +33,13 @@ export interface StockProps {
     timestamp: Timestamp;
 }
 export interface PrizeProps {
-    [key: string]: number | string[]; // 문자열 인덱스 추가
+    [key: string]: number | string[] | boolean; // 문자열 인덱스 추가
     ship1: number;
     ship2: number;
     ship3: number;
     ship4: number;
     ship5: number;
+    get: boolean;
     win: string[] | []; // win을 문자열 배열로 설정
 }
 export default function MotorballPage() {
@@ -96,9 +97,7 @@ export default function MotorballPage() {
             console.log(error);
         }
     };
-    const { data: stockData } = useQuery("stockData", fetchStockValue, {
-        staleTime: 20000,
-    });
+    const { data: stockData } = useQuery("stockData", fetchStockValue);
     const fetchPrizeValue = async () => {
         if (user?.uid && stockData) {
             try {
@@ -123,6 +122,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: winSnapshot.data().value,
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -139,6 +139,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: [],
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -153,7 +154,6 @@ export default function MotorballPage() {
         }
     };
     const { data: prizeData } = useQuery("prizeData", fetchPrizeValue, {
-        staleTime: 20000,
         enabled: !!stockData,
     });
     const beforePrizeValue = async () => {
@@ -179,6 +179,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: winSnapshot.data().value,
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -195,6 +196,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: [],
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -212,7 +214,6 @@ export default function MotorballPage() {
         "beforePrizeData",
         beforePrizeValue,
         {
-            staleTime: 20000,
             enabled: !!stockData,
         }
     );
@@ -241,6 +242,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: winSnapshot.data().value,
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -257,6 +259,7 @@ export default function MotorballPage() {
                             ship4: 0,
                             ship5: 0,
                             win: [],
+                            get: true,
                         } as PrizeProps;
                     }
                     const data = {
@@ -274,7 +277,6 @@ export default function MotorballPage() {
         "beforePrizeData2",
         beforePrizeValue2,
         {
-            staleTime: 20000,
             enabled: !!stockData,
         }
     );
