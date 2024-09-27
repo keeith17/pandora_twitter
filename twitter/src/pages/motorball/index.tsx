@@ -789,7 +789,12 @@ export default function MotorballPage() {
                                 <div className="calc">
                                     상금: {getCalc(beforePrizeData)}
                                     {!beforePrizeData.get ? (
-                                        <button onClick={getPrize}>수령</button>
+                                        <button
+                                            onClick={getPrize}
+                                            disabled={isSubmitting}
+                                        >
+                                            수령
+                                        </button>
                                     ) : (
                                         <button disabled>수령 완료</button>
                                     )}
@@ -828,7 +833,10 @@ export default function MotorballPage() {
                                 <div className="calc">
                                     상금: {getCalc(beforePrizeData2)}
                                     {!beforePrizeData2.get ? (
-                                        <button onClick={getPrize2}>
+                                        <button
+                                            onClick={getPrize2}
+                                            disabled={isSubmitting}
+                                        >
                                             수령
                                         </button>
                                     ) : (
@@ -869,7 +877,10 @@ export default function MotorballPage() {
                                 <div className="calc">
                                     상금: {getCalc(beforePrizeData3)}
                                     {!beforePrizeData3.get ? (
-                                        <button onClick={getPrize3}>
+                                        <button
+                                            onClick={getPrize3}
+                                            disabled={isSubmitting}
+                                        >
                                             수령
                                         </button>
                                     ) : (
