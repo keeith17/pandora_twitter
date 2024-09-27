@@ -135,7 +135,7 @@ export const PrizeRecordWrap = styled.div`
         width: 100%;
         padding: 2vh;
         display: flex;
-        gap: 5vh;
+        gap: 4vh;
         flex-flow: wrap;
     }
     .winShip {

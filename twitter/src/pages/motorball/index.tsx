@@ -760,105 +760,126 @@ export default function MotorballPage() {
                         </>
                     )}
                 </PrizeRecordWrap>
-                <PrizeRecordWrap>
-                    <p>{stockData.open - 1}회 기록</p>
-                    {beforePrizeData && (
-                        <>
-                            <div className="shipsRecord">
-                                {shipList.map((ship: string) => (
-                                    <div className={`ship ${ship}`} key={ship}>
-                                        <div className="color"></div>
-                                        <div className="much">
-                                            {beforePrizeData[ship]}
+                {stockData.open - 1 > 0 && (
+                    <PrizeRecordWrap>
+                        <p>{stockData.open - 1}회 기록</p>
+                        {beforePrizeData && (
+                            <>
+                                <div className="shipsRecord">
+                                    {shipList.map((ship: string) => (
+                                        <div
+                                            className={`ship ${ship}`}
+                                            key={ship}
+                                        >
+                                            <div className="color"></div>
+                                            <div className="much">
+                                                {beforePrizeData[ship]}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="ship winShip">
-                                우승:{" "}
-                                {beforePrizeData.win.map((ship) => (
-                                    <div className={`ship ${ship}`}>
-                                        <div className="color"></div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="calc">
-                                상금: {getCalc(beforePrizeData)}
-                                {!beforePrizeData.get ? (
-                                    <button onClick={getPrize}>수령</button>
-                                ) : (
-                                    <button disabled>수령 완료</button>
-                                )}
-                            </div>
-                        </>
-                    )}
-                </PrizeRecordWrap>
-                <PrizeRecordWrap>
-                    <p>{stockData.open - 2}회 기록</p>
-                    {beforePrizeData2 && (
-                        <>
-                            <div className="shipsRecord">
-                                {shipList.map((ship: string) => (
-                                    <div className={`ship ${ship}`} key={ship}>
-                                        <div className="color"></div>
-                                        <div className="much">
-                                            {beforePrizeData2[ship]}
+                                    ))}
+                                </div>
+                                <div className="ship winShip">
+                                    우승:{" "}
+                                    {beforePrizeData.win.map((ship) => (
+                                        <div className={`ship ${ship}`}>
+                                            <div className="color"></div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="ship winShip">
-                                우승:{" "}
-                                {beforePrizeData2.win.map((ship) => (
-                                    <div className={`ship ${ship}`}>
-                                        <div className="color"></div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="calc">
-                                상금: {getCalc(beforePrizeData2)}
-                                {!beforePrizeData2.get ? (
-                                    <button onClick={getPrize2}>수령</button>
-                                ) : (
-                                    <button disabled>수령 완료</button>
-                                )}
-                            </div>
-                        </>
-                    )}
-                </PrizeRecordWrap>
-                <PrizeRecordWrap>
-                    <p>{stockData.open - 3}회 기록</p>
-                    {beforePrizeData3 && (
-                        <>
-                            <div className="shipsRecord">
-                                {shipList.map((ship: string) => (
-                                    <div className={`ship ${ship}`} key={ship}>
-                                        <div className="color"></div>
-                                        <div className="much">
-                                            {beforePrizeData3[ship]}
+                                    ))}
+                                </div>
+                                <div className="calc">
+                                    상금: {getCalc(beforePrizeData)}
+                                    {!beforePrizeData.get ? (
+                                        <button onClick={getPrize}>수령</button>
+                                    ) : (
+                                        <button disabled>수령 완료</button>
+                                    )}
+                                </div>
+                            </>
+                        )}
+                    </PrizeRecordWrap>
+                )}
+
+                {stockData.open - 2 > 0 && (
+                    <PrizeRecordWrap>
+                        <p>{stockData.open - 2}회 기록</p>
+                        {beforePrizeData2 && (
+                            <>
+                                <div className="shipsRecord">
+                                    {shipList.map((ship: string) => (
+                                        <div
+                                            className={`ship ${ship}`}
+                                            key={ship}
+                                        >
+                                            <div className="color"></div>
+                                            <div className="much">
+                                                {beforePrizeData2[ship]}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="ship winShip">
-                                우승:{" "}
-                                {beforePrizeData3.win.map((ship) => (
-                                    <div className={`ship ${ship}`}>
-                                        <div className="color"></div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="calc">
-                                상금: {getCalc(beforePrizeData3)}
-                                {!beforePrizeData3.get ? (
-                                    <button onClick={getPrize3}>수령</button>
-                                ) : (
-                                    <button disabled>수령 완료</button>
-                                )}
-                            </div>
-                        </>
-                    )}
-                </PrizeRecordWrap>
+                                    ))}
+                                </div>
+                                <div className="ship winShip">
+                                    우승:{" "}
+                                    {beforePrizeData2.win.map((ship) => (
+                                        <div className={`ship ${ship}`}>
+                                            <div className="color"></div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="calc">
+                                    상금: {getCalc(beforePrizeData2)}
+                                    {!beforePrizeData2.get ? (
+                                        <button onClick={getPrize2}>
+                                            수령
+                                        </button>
+                                    ) : (
+                                        <button disabled>수령 완료</button>
+                                    )}
+                                </div>
+                            </>
+                        )}
+                    </PrizeRecordWrap>
+                )}
+
+                {stockData.open - 3 > 0 && (
+                    <PrizeRecordWrap>
+                        <p>{stockData.open - 3}회 기록</p>
+                        {beforePrizeData3 && (
+                            <>
+                                <div className="shipsRecord">
+                                    {shipList.map((ship: string) => (
+                                        <div
+                                            className={`ship ${ship}`}
+                                            key={ship}
+                                        >
+                                            <div className="color"></div>
+                                            <div className="much">
+                                                {beforePrizeData3[ship]}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="ship winShip">
+                                    우승:{" "}
+                                    {beforePrizeData3.win.map((ship) => (
+                                        <div className={`ship ${ship}`}>
+                                            <div className="color"></div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="calc">
+                                    상금: {getCalc(beforePrizeData3)}
+                                    {!beforePrizeData3.get ? (
+                                        <button onClick={getPrize3}>
+                                            수령
+                                        </button>
+                                    ) : (
+                                        <button disabled>수령 완료</button>
+                                    )}
+                                </div>
+                            </>
+                        )}
+                    </PrizeRecordWrap>
+                )}
             </MotorballWrap>
         )
     );

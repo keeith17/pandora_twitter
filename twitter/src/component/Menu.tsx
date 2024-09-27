@@ -104,12 +104,12 @@ export default function MenuList() {
                         location.pathname === "/motorball" ? "select" : ""
                     }
                     onClick={() => {
-                        return;
-                        // navigate("/motorball");
-                        // window.scrollTo({
-                        //     top: 0,
-                        //     behavior: "smooth",
-                        // });
+                        // return;
+                        navigate("/motorball");
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth",
+                        });
                     }}
                 >
                     <GiThunderball size={21} />
