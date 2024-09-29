@@ -604,7 +604,7 @@ export default function MotorballPage() {
                 // myData에 해당 항목이 존재하는지 확인
                 total +=
                     Number(prizeData[ship]) *
-                    Math.round(100 / prizeData.win.length); // 값을 100배해서 합산
+                    Math.round(120 / prizeData.win.length); // 값을 100배해서 합산
             }
         }
         return total;
