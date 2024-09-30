@@ -378,7 +378,7 @@ export default function MotorballPage() {
         }
     };
 
-    //제출
+    //구입하기
     const makePurchase = useMutation(async () => {
         if (user?.uid && QInfo && stockData) {
             try {
@@ -394,9 +394,20 @@ export default function MotorballPage() {
                     user.uid
                 );
                 const sendCredit =
-                    (ship1Val + ship2Val + ship3Val + ship4Val + ship5Val) *
-                    20 *
-                    stockData?.count;
+                    stockData?.count === 1
+                        ? (ship1Val +
+                              ship2Val +
+                              ship3Val +
+                              ship4Val +
+                              ship5Val) *
+                          30
+                        : (ship1Val +
+                              ship2Val +
+                              ship3Val +
+                              ship4Val +
+                              ship5Val) *
+                          20 *
+                          stockData?.count;
                 await updateDoc(myMoneyRef, {
                     credit: QInfo.credit - sendCredit,
                 });
@@ -445,7 +456,20 @@ export default function MotorballPage() {
 
     const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        makePurchase.mutate();
+        const sendCredit =
+            stockData?.count === 1
+                ? (ship1Val + ship2Val + ship3Val + ship4Val + ship5Val) * 30
+                : (ship1Val + ship2Val + ship3Val + ship4Val + ship5Val) *
+                  20 *
+                  stockData?.count;
+
+        if (QInfo) {
+            if (QInfo.credit - sendCredit < 0) {
+                alert("Q가 부족합니다!");
+            } else {
+                makePurchase.mutate();
+            }
+        }
     };
 
     //이전회차 수령하기 귀찬아서 미친다 진짜
@@ -703,13 +727,20 @@ export default function MotorballPage() {
                     <p>
                         소지금: {QInfo?.credit}Q 총 구매 금액:{" "}
                         {/* 1회차는 20큐는 해야 대충 밸런스가 맞음 */}
-                        {(ship1Val +
-                            ship2Val +
-                            ship3Val +
-                            ship4Val +
-                            ship5Val) *
-                            20 *
-                            stockData?.count}
+                        {stockData?.count === 1
+                            ? (ship1Val +
+                                  ship2Val +
+                                  ship3Val +
+                                  ship4Val +
+                                  ship5Val) *
+                              30
+                            : (ship1Val +
+                                  ship2Val +
+                                  ship3Val +
+                                  ship4Val +
+                                  ship5Val) *
+                              20 *
+                              stockData?.count}
                         Q
                     </p>
                     {!(
